@@ -6,7 +6,7 @@ function App() {
   const hideSidebar = location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-    <div className="flex min-h-screen bg-stone-50 text-black">
+    <div className="flex min-h-screen bg-stone-50 dark:bg-dark-background">
       {!hideSidebar && <Sidebar />}
       <main className="flex-1 p-6">
         <Outlet />

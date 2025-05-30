@@ -19,13 +19,9 @@ export default function Settings() {
         setMessage("");
         if (user) {
             try {
-                // 1. Aggiorna displayName in Firebase Auth
                 await updateProfile(user, { displayName });
-
-                // 2. Aggiorna displayName in Firestore
                 const userDocRef = doc(db, "users", user.uid);
                 await updateDoc(userDocRef, { displayName });
-
                 setMessage("Nome aggiornato con successo!");
             } catch (error) {
                 setMessage("Errore durante l'aggiornamento.");
@@ -35,23 +31,27 @@ export default function Settings() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
+        <div className="max-w-md mx-auto mt-10 bg-light-background dark:bg-dark-background p-6 rounded shadow text-light-text-primary dark:text-dark-text-primary">
             <h2 className="text-2xl font-bold mb-4">Impostazioni profilo</h2>
             <form onSubmit={handleSave} className="flex flex-col space-y-4">
                 <input
                     type="text"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
-                    className="border p-2 rounded"
+                    className="border border-light-border dark:border-dark-border p-2 rounded bg-white dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary"
                     placeholder="Il tuo nome"
                 />
                 <button
                     type="submit"
-                    className="bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+                    className="bg-light-primary dark:bg-dark-primary text-white py-2 rounded hover:opacity-90 transition"
                 >
                     Salva
                 </button>
-                {message && <p className="text-sm text-center mt-2">{message}</p>}
+                {message && (
+                    <p className="text-sm text-center mt-2 text-light-text-secondary dark:text-dark-text-secondary">
+                        {message}
+                    </p>
+                )}
             </form>
         </div>
     );
