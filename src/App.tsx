@@ -3,9 +3,7 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
   const location = useLocation();
-
-  // Nascondi sidebar nelle pagine come /login
-  const hideSidebar = location.pathname === "/login";
+  const hideSidebar = location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <div className="flex min-h-screen bg-stone-50 text-black">
@@ -16,5 +14,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;

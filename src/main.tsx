@@ -8,18 +8,25 @@ import Dashboard from "./pages/Dashboard";
 import "./index.css";
 import Profile from "./pages/Profile.tsx";
 import Settings from "./pages/Settings.tsx";
+import RequireAuth from "./components/RequireAuth.tsx";
+import SignUp from "./pages/SignUp.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />}>
+        {/* ROUTE PUBBLICHE */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+
+        {/* ROUTE PROTETTE */}
+        <Route path="/" element={<RequireAuth><App /></RequireAuth>}>
           <Route index element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
+
 );
