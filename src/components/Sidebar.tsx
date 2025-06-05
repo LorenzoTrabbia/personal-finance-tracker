@@ -3,6 +3,12 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 
+// Icons
+import { LayoutDashboard } from 'lucide-react';
+import { User } from 'lucide-react';
+import { Settings } from 'lucide-react';
+import { LogOut } from "lucide-react";
+
 export default function Sidebar() {
     const navigate = useNavigate();
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -51,37 +57,62 @@ export default function Sidebar() {
     };
 
     return (
-        <aside className="w-64 bg-light-background dark:bg-dark-background shadow-md min-h-screen p-6 hidden md:flex flex-col justify-between border-r dark:border-dark-border">
-            <nav className="flex flex-col space-y-4">
+        <aside className="w-64 shadow-md min-h-screen p-4 hidden md:flex flex-col justify-between
+            bg-light-primary dark:bg-dark-primary  dark:border-r-2 dark:border-dark-border"
+        >
+            <nav className="flex flex-col space-y-4 mt-4">
                 <NavLink
                     to="/"
                     className={({ isActive }) =>
-                        isActive
-                            ? "font-bold text-light-primary dark:text-dark-primary"
-                            : "text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary"
+                        [
+                            "rounded-lg py-2",
+                            "transition-colors duration-200",
+                            isActive
+                                ? "font-bold text-light-white dark:text-dark-primary bg-slate-600"
+                                : "text-light-white dark:text-dark-text-primary hover:opacity-100 opacity-80"
+                        ].join(" ")
                     }
                 >
+                    <LayoutDashboard className="inline mx-4 mr-6" />
                     Dashboard
                 </NavLink>
                 <NavLink
                     to="/profile"
                     className={({ isActive }) =>
-                        isActive
-                            ? "font-bold text-light-primary dark:text-dark-primary"
-                            : "text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary"
+                        [
+                            "rounded-lg py-2",
+                            "transition-colors duration-200",
+                            isActive
+                                ? "font-bold text-light-white dark:text-dark-primary bg-slate-600"
+                                : "text-light-white dark:text-dark-text-primary hover:opacity-100 opacity-80"
+                        ].join(" ")
                     }
                 >
+                    <User className="inline mx-4 mr-6" />
                     Profile
                 </NavLink>
                 <NavLink
                     to="/settings"
                     className={({ isActive }) =>
-                        isActive
-                            ? "font-bold text-light-primary dark:text-dark-primary"
-                            : "text-light-text-primary dark:text-dark-text-primary hover:text-light-primary dark:hover:text-dark-primary"
+                        [
+                            "rounded-lg py-2",
+                            "transition-colors duration-200",
+                            isActive
+                                ? "font-bold text-light-white dark:text-dark-primary bg-slate-600"
+                                : "text-light-white dark:text-dark-text-primary hover:opacity-100 opacity-80"
+                        ].join(" ")
                     }
                 >
+                    <Settings className="inline mx-4 mr-6" />
                     Settings
+                </NavLink>
+                <NavLink
+                    to="/logout"
+                    onClick={handleLogout}
+                    className="rounded-lg py-2 transition-colors duration-200 text-light-white dark:text-dark-text-primary hover:opacity-100 opacity-80"
+                >
+                    <LogOut className="inline mx-4 mr-6" color="red" />
+                    Logout
                 </NavLink>
             </nav>
 
@@ -106,12 +137,6 @@ export default function Sidebar() {
                         </svg>
                     </span>
                 </label>
-                <button
-                    onClick={handleLogout}
-                    className="bg-light-negative-value dark:bg-dark-negative-value text-white px-4 py-2 rounded hover:brightness-110 transition"
-                >
-                    Logout
-                </button>
             </div>
 
         </aside>

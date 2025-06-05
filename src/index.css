@@ -2,21 +2,30 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --color-light-primary: #007B8A;
-    --color-light-secondary: #28A745;
-    --color-light-negative-value: #D9534F;
-    --color-light-background: #F5F7FA;
-    --color-light-text-primary: #343A40;
-    --color-light-text-secondary: #6C757D;
-    --color-light-border: #DEE2E6;
+  /* LIGHT THEME */
+  --color-light-white: #FFFFFF;
+  --color-light-primary: #1C2434; /* Sidebar */
+  --color-light-secondary: #16A34A; /* Pulsanti positivi */
+  --color-light-negative-value: #B91C1C; /* Rosso outcome */
+  --color-light-positive-value: #16A34A; /* Verde income */
+  --color-light-background: #FAFAF9; /* Sfondo principale */
+  --color-light-secondary-background: #F1F5F9; /* Alternative bg per card */
+  --color-light-card: #FFFFFF; /* Card */
+  --color-light-text-primary: #0F172A;
+  --color-light-text-secondary: #64748B;
+  --color-light-border: #E5E7EB;
 
-    --color-dark-primary: #3399AA;
-    --color-dark-secondary: #2ECC71;
-    --color-dark-negative-value: #E06A6A;
-    --color-dark-background: #1E1E2F;
-    --color-dark-text-primary: #E1E1E6;
-    --color-dark-text-secondary: #A0A0B0;
-    --color-dark-border: #3C3C4A;
+  /* DARK THEME */
+  --color-dark-primary: #0B1120; /* Sidebar */
+  --color-dark-secondary: #22C55E; /* Pulsanti positivi */
+  --color-dark-negative-value: #F87171;
+  --color-dark-positive-value: #4ADE80;
+  --color-dark-background: #0F172A; /* Sfondo principale */
+  --color-dark-secondary-background: #1E293B; /* Card */
+  --color-dark-card: #1E293B;
+  --color-dark-text-primary: #F1F5F9;
+  --color-dark-text-secondary: #94A3B8;
+  --color-dark-border: #334155;
 }
 
 /* From Uiverse.io by JustCode14 */ 
