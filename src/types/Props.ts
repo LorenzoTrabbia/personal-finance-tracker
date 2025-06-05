@@ -3,9 +3,7 @@ import type { Transaction } from "./Transaction";
 export type BalanceCardProps = {
     title: string;
     value: number;
-    image: string;
-    size?: "large" | "small";
-  gradient?: "green" | "red";
+    style?: string;
 };
 
 export type FilterBarProps = {

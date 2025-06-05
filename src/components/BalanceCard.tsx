@@ -1,35 +1,20 @@
 import type { BalanceCardProps } from "../types/Props"
 
-const gradientClasses = {
-    green: "bg-gradient-to-br from-green-400 to-green-600",
-    red: "bg-gradient-to-br from-red-400 to-red-600",
-};
-
-function BalanceCard({ title, value, image, size = 'large', gradient }: BalanceCardProps) {
-    const baseStyles = "relative p-6 rounded-2xl shadow-md text-white overflow-hidden flex flex-col justify-between";
-
-    // Responsive width:
-    // large: full width always
-    // small: w-full on xs, w-40 on sm+
-    const heightClass = size === "large" ? "h-32" : "h-28";
-    const widthClass =
-        size === "large"
-            ? "w-full max-w-2xl" // evita che si allarghi troppo
-            : "w-full sm:w-48";
-
-    const bgColor = gradient ? gradientClasses[gradient] : "bg-light-secondary-background";
-
+function BalanceCard({ title, value, style }: BalanceCardProps) {
     return (
         <div
-            className={`${baseStyles} ${bgColor} ${heightClass} ${widthClass}`}
+            className={[
+                "relative p-4 rounded-xl shadow-md overflow-hidden flex flex-col justify-between w-full max-w-3xl",
+                "transition-transform hover:scale-105 duration-200",
+                style === "reverse"
+                    ? "text-dark-text-primary dark:text-light-text-primary bg-dark-secondary-background dark:bg-light-bg-secondary"
+                    : "text-light-text-primary dark:text-dark-text-primary bg-light-secondary-background dark:bg-dark-bg-secondary",
+            ]
+                .filter(Boolean)
+                .join(" ")}
         >
-            <span className="text-base font-medium">{title}</span>
-            <span className="text-xl font-bold">€{value.toFixed(2)}</span>
-            <img
-                src={image}
-                alt={title}
-                className="absolute bottom-0 right-0 w-20 h-20 pointer-events-none select-none"
-            />
+            <span className="text-base font-light mb-3">{title}</span>
+            <span className="text-2xl">€{value.toFixed(2)}</span>
         </div>
     );
 }

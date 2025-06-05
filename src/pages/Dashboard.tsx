@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import AddTransactionModal from "../components/AddTransactionModal";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
+
+// Types
 import type { Transaction } from "../types/Transaction";
-import greenDetail from "../assets/greenDetail.png";
-import redDetail from "../assets/redDetail.png";
+
+// Components
+import AddTransactionModal from "../components/AddTransactionModal";
 import BalanceCard from "../components/BalanceCard";
 import FilterBar from "../components/FilterBar";
 
@@ -82,38 +84,29 @@ export default function Dashboard() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isModalOpen, sortBy, selectedCategory, selectedMonth, selectedYear]);
 
-    const userName = auth.currentUser?.displayName || "Utente";
+    const userName = auth.currentUser?.displayName || "";
 
     return (
-        <div className="p-4 max-w-6xl mx-auto text-light-text-primary dark:text-dark-text-primary">
-            <h1 className="text-3xl font-bold mb-6 text-light-primary dark:text-dark-primary">Benvenuto {userName}!</h1>
+        <div className="p-10 max-w-6xl mx-auto text-light-text-primary dark:text-dark-text-primary">
+            <h1 className="text-4xl font-semibold mb-10 text-light-primary dark:text-dark-primary">
+                {userName ? `Welcome, ${userName}!` : "Welcome!"}
+            </h1>
 
-            <div className="flex flex-col gap-4 mb-6">
-                {/* Balance card grande */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <BalanceCard
-                    title="Current Balance"
+                    title="Total Balance"
                     value={balance}
-                    image={balance >= 0 ? greenDetail : redDetail}
-                    size="large"
+                    style="reverse"
                 />
 
-                {/* Container per le due small cards sotto */}
-                <div className="flex gap-4 flex-wrap">
-                    <BalanceCard
-                        title="Monthly Income"
-                        value={monthlyIncome}
-                        image={greenDetail}
-                        size="small"
-                        gradient="green"
-                    />
-                    <BalanceCard
-                        title="Monthly Outcome"
-                        value={monthlyOutcome}
-                        image={redDetail}
-                        size="small"
-                        gradient="red"
-                    />
-                </div>
+                <BalanceCard
+                    title="Monthly Income"
+                    value={monthlyIncome}
+                />
+                <BalanceCard
+                    title="Monthly Outcome"
+                    value={monthlyOutcome}
+                />
             </div>
 
 
