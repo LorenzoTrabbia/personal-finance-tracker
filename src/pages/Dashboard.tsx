@@ -88,7 +88,7 @@ export default function Dashboard() {
 
     return (
         <div className="p-10 max-w-6xl mx-auto text-light-text-primary dark:text-dark-text-primary">
-            <h1 className="text-4xl font-semibold mb-10 text-light-primary dark:text-dark-primary">
+            <h1 className="text-4xl font-semibold mb-10 text-light-primary dark:text-dark-text-primary">
                 {userName ? `Welcome, ${userName}!` : "Welcome!"}
             </h1>
 
