@@ -68,8 +68,8 @@ export default function Sidebar() {
                             "rounded-lg py-2",
                             "transition-colors duration-200",
                             isActive
-                                ? "font-bold text-light-white dark:text-dark-primary bg-slate-600"
-                                : "text-light-white dark:text-dark-text-primary hover:opacity-100 opacity-80"
+                                ? "font-bold text-light-white bg-slate-600"
+                                : "text-light-white hover:opacity-100 opacity-80"
                         ].join(" ")
                     }
                 >
@@ -83,8 +83,8 @@ export default function Sidebar() {
                             "rounded-lg py-2",
                             "transition-colors duration-200",
                             isActive
-                                ? "font-bold text-light-white dark:text-dark-primary bg-slate-600"
-                                : "text-light-white dark:text-dark-text-primary hover:opacity-100 opacity-80"
+                                ? "font-bold text-light-white bg-slate-600"
+                                : "text-light-white hover:opacity-100 opacity-80"
                         ].join(" ")
                     }
                 >
@@ -98,8 +98,8 @@ export default function Sidebar() {
                             "rounded-lg py-2",
                             "transition-colors duration-200",
                             isActive
-                                ? "font-bold text-light-white dark:text-dark-primary bg-slate-600"
-                                : "text-light-white dark:text-dark-text-primary hover:opacity-100 opacity-80"
+                                ? "font-bold text-light-white bg-slate-600"
+                                : "text-light-white hover:opacity-100 opacity-80"
                         ].join(" ")
                     }
                 >
@@ -109,7 +109,7 @@ export default function Sidebar() {
                 <NavLink
                     to="/logout"
                     onClick={handleLogout}
-                    className="rounded-lg py-2 transition-colors duration-200 text-light-white dark:text-dark-text-primary hover:opacity-100 opacity-80"
+                    className="rounded-lg py-2 mt-6 transition-colors duration-200 text-light-white hover:opacity-100 opacity-80"
                 >
                     <LogOut className="inline mx-4 mr-6" color="red" />
                     Logout

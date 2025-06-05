@@ -3,7 +3,7 @@
 
 @theme {
   /* LIGHT THEME */
-  --color-light-white: #FFFFFF;
+  --color-light-white: #F1F5F9;
   --color-light-primary: #1C2434; /* Sidebar */
   --color-light-secondary: #16A34A; /* Pulsanti positivi */
   --color-light-negative-value: #B91C1C; /* Rosso outcome */
