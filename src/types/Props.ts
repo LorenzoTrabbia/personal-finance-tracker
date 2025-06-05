@@ -7,8 +7,6 @@ export type BalanceCardProps = {
 };
 
 export type FilterBarProps = {
-    sortBy: string;
-    setSortBy: (val: string) => void;
     selectedCategory: string;
     setSelectedCategory: (val: string) => void;
     selectedMonth: string;
@@ -20,12 +18,17 @@ export type FilterBarProps = {
 };
 
 export type TransactionItemProps = {
-    tx: Transaction;
+    transaction: Transaction;
 };
 
 export type AddTransactionButtonProps = {
     onClick: () => void;
 };
+
+export type SortByProps = {
+    sortBy: string;
+    setSortBy: (val: string) => void;
+}
   
   
   

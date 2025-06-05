@@ -10,6 +10,9 @@ import type { Transaction } from "../types/Transaction";
 import AddTransactionModal from "../components/AddTransactionModal";
 import BalanceCard from "../components/BalanceCard";
 import FilterBar from "../components/FilterBar";
+import TransactionItem from "../components/TransactionItem";
+import AddTransactionButton from "../components/AddTransactionButton";
+import SortBy from "../components/SortBy";
 
 export default function Dashboard() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -110,10 +113,8 @@ export default function Dashboard() {
             </div>
 
 
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
                 <FilterBar
-                    sortBy={sortBy}
-                    setSortBy={setSortBy}
                     selectedCategory={selectedCategory}
                     setSelectedCategory={setSelectedCategory}
                     selectedMonth={selectedMonth}
@@ -124,33 +125,24 @@ export default function Dashboard() {
                     availableYears={availableYears}
                 />
 
-                <button
+                <AddTransactionButton
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-semibold px-4 py-2 rounded-xl shadow hover:scale-105 transition-transform"
-                >
-                    + Aggiungi Transazione
-                </button>
-
+                />
             </div>
 
+            <SortBy
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+            />
+
             {loading ? (
-                <p>Caricamento in corso...</p>
+                <p>Loading...</p>
             ) : transactions.length === 0 ? (
-                <p>Nessuna transazione trovata.</p>
+                <p>No transaction found</p>
             ) : (
                 <ul className="space-y-2">
                     {transactions.map(tx => (
-                        <li key={tx.id} className="p-3 rounded shadow-sm bg-light-background dark:bg-dark-background flex justify-between items-center">
-                            <div>
-                                <p className="font-medium">{tx.name}</p>
-                                <p className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
-                                    {new Date(tx.date).toLocaleDateString()} • {tx.category}
-                                </p>
-                            </div>
-                            <div className={`font-bold ${tx.type === "income" ? "text-light-positive-value dark:text-dark-positive-value" : "text-light-negative-value dark:text-dark-negative-value"}`}>
-                                {tx.type === "income" ? "+" : "-"}€{tx.amount.toFixed(2)}
-                            </div>
-                        </li>
+                        <TransactionItem key={tx.id} transaction={tx} />
                     ))}
                 </ul>
             )}

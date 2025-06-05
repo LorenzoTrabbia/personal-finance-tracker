@@ -1,9 +1,11 @@
+// Types
 import { months } from "../types/Months";
 import type { FilterBarProps } from "../types/Props"
 
+// Icons
+import { ChevronDown } from 'lucide-react';
+
 export default function FilterBar({
-    sortBy,
-    setSortBy,
     selectedCategory,
     setSelectedCategory,
     selectedMonth,
@@ -19,104 +21,90 @@ export default function FilterBar({
         setSelectedYear("");
     };
 
-    const tagBase =
-        "cursor-pointer px-4 py-1 rounded-full border transition select-none";
-
-    const tagSelected =
-        "bg-blue-600 border-blue-600 text-white hover:bg-blue-700";
-
-    const tagUnselected =
-        "bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200";
-
     return (
-        <div className="flex flex-col gap-3 mb-6 items-left">
-            {/* SortBy dropdown */}
-            <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="appearance-none px-4 py-1 rounded-full border border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-                <option value="date_desc">Data (più recente)</option>
-                <option value="date_asc">Data (meno recente)</option>
-                <option value="amount_desc">Importo (decrescente)</option>
-                <option value="amount_asc">Importo (crescente)</option>
-            </select>
+        <div className="flex flex-col sm:flex-row sm:items-end gap-4 w-full flex-wrap">
 
-            {/* Categories tags */}
-            <div className="flex flex-wrap gap-2">
-                <span
-                    className={`${tagBase} ${selectedCategory === "" ? tagSelected : tagUnselected
-                        }`}
-                    onClick={() => setSelectedCategory("")}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => e.key === "Enter" && setSelectedCategory("")}
+            {/* Categories filter */}
+            <div className="relative w-48">
+                <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="appearance-none w-full px-4 py-2 pr-10 rounded-md border border-gray-300 bg-white text-gray-700 
+                    shadow-2xs focus:outline-none focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent"
                 >
-                    Tutte
-                </span>
-                {availableCategories.map((cat) => (
-                    <span
-                        key={cat}
-                        className={`${tagBase} ${selectedCategory === cat ? tagSelected : tagUnselected
-                            }`}
-                        onClick={() => setSelectedCategory(cat)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => e.key === "Enter" && setSelectedCategory(cat)}
-                    >
-                        {cat}
-                    </span>
-                ))}
-            </div>
-
-            {/* Filtro mese */}
-            <select
-                value={selectedMonth}
-                onChange={(e) => setSelectedMonth(e.target.value)}
-                className="appearance-none px-4 py-1 rounded-full border border-gray-300 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-                <option value="">Tutti i mesi</option>
-                {months.map((m) => (
-                    <option key={m.value} value={m.value}>
-                        {m.label}
+                    <option value="" disabled hidden>
+                        Category
                     </option>
-                ))}
-            </select>
+                    <option value="">All Categories</option>
+                    {availableCategories.map((cat) => (
+                        <option key={cat} value={cat}>
+                            {cat}
+                        </option>
+                    ))}
+                </select>
 
-            {/* Years tags */}
-            <div className="flex flex-wrap gap-2">
-                <span
-                    className={`${tagBase} ${selectedYear === "" ? tagSelected : tagUnselected
-                        }`}
-                    onClick={() => setSelectedYear("")}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => e.key === "Enter" && setSelectedYear("")}
-                >
-                    Tutti
-                </span>
-                {availableYears.map((y) => (
-                    <span
-                        key={y}
-                        className={`${tagBase} ${selectedYear === String(y) ? tagSelected : tagUnselected
-                            }`}
-                        onClick={() => setSelectedYear(String(y))}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => e.key === "Enter" && setSelectedYear(String(y))}
-                    >
-                        {y}
-                    </span>
-                ))}
+                <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    <ChevronDown className="h-4 w-4" />
+                </div>
             </div>
 
-            {/* Reset */}
-            <button
-                onClick={resetFilters}
-                className="ml-auto px-4 py-1 rounded-full bg-red-500 text-white hover:bg-red-600 transition"
-            >
-                Reset filtri
-            </button>
+            {/* Months filter */}
+            <div className="relative w-48">
+                <select
+                    value={selectedMonth}
+                    onChange={(e) => setSelectedMonth(e.target.value)}
+                    className="appearance-none w-full px-4 py-2 pr-10 rounded-md border border-gray-300 bg-white text-gray-700 
+                    shadow-2xs focus:outline-none focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent"
+                >
+                    <option value="" disabled hidden>
+                        Month
+                    </option>
+                    <option value="">All Months</option>
+                    {months.map((m) => (
+                        <option key={m.value} value={m.value}>
+                            {m.label}
+                        </option>
+                    ))}
+                </select>
+
+                <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    <ChevronDown className="h-4 w-4" />
+                </div>
+            </div>
+
+
+            {/* Years filter */}
+            <div className="relative w-48">
+                <select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.target.value)}
+                    className="appearance-none w-full px-4 py-2 pr-10 rounded-md border border-gray-300 bg-white text-gray-700 
+                    shadow-2xs focus:outline-none focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent"
+                >
+                    <option value="" disabled hidden>
+                        Year
+                    </option>
+                    <option value="">All Years</option>
+                    {availableYears.map((y) => (
+                        <option key={y} value={y}>
+                            {y}
+                        </option>
+                    ))}
+                </select>
+
+                <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    <ChevronDown className="h-4 w-4" />
+                </div>
+            </div>
+
+            {(selectedCategory || selectedMonth || selectedYear) && (
+                <button
+                    onClick={resetFilters}
+                    className="mt-2 text-sm text-red-500 cursor-pointer hover:underline hover:opacity-90 transition"
+                >
+                    Reset Filters
+                </button>
+            )}
         </div>
     );
 }
