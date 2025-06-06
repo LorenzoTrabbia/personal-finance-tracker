@@ -9,7 +9,7 @@ export default function SortBy({ sortBy, setSortBy, disabled = false }: SortByPr
         <div
             className={`relative w-fit mb-2 rounded-md ${disabled
                 ? 'text-gray-400 cursor-not-allowed'
-                : 'hover:bg-gray-100 hover:dark:bg-gray-700 transition-colors duration-200 ease-in-out'
+                : ''
                 }`}
         >
             <div className={`pointer-events-none absolute left-3 top-1/2 transform -translate-y-1/2 ${disabled ? 'cursor-not-allowed' : 'text-gray-500 dark:text-gray-400'
@@ -24,7 +24,7 @@ export default function SortBy({ sortBy, setSortBy, disabled = false }: SortByPr
                             focus:outline-none focus:border-transparent
                             ${disabled
                         ? 'cursor-not-allowed'
-                        : 'bg-white dark:bg-dark-primary-background cursor-pointer'}
+                        : 'dark:bg-dark-primary-background cursor-pointer'}
                 `}
             >
                 <option value="date_desc" className='dark:text-light-text-primary'>Date (Newest)</option>

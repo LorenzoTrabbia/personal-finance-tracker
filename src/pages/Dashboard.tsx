@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, orderBy, doc, deleteDoc } from "firebase/firestore";
+import {
+    collection,
+    getDocs,
+    query,
+    orderBy,
+    doc,
+    deleteDoc
+} from "firebase/firestore";
 import { AnimatePresence } from "framer-motion";
 
 // Types
@@ -18,7 +25,12 @@ import ConfirmDialog from "../components/ConfirmDialog";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
 
+// Context
+import { useAppContext } from "../context/useAppContext";
+
 export default function Dashboard() {
+    const { currency, userName } = useAppContext();
+
     const [loading, setLoading] = useState(true);
 
     // Modal and transaction state
@@ -141,8 +153,6 @@ export default function Dashboard() {
         setTransactionToDelete(null);
     };
 
-    const userName = auth.currentUser?.displayName || "";
-
     return (
         <div className="p-10 max-w-6xl mx-auto text-light-text-primary dark:text-dark-text-primary">
             <h1 className="text-4xl font-semibold mb-10 text-light-primary dark:text-dark-text-primary">
@@ -155,15 +165,18 @@ export default function Dashboard() {
                     title="Total Balance"
                     value={balance}
                     style="reverse"
+                    currency={currency}
                 />
 
                 <BalanceCard
                     title="Monthly Income"
                     value={monthlyIncome}
+                    currency={currency}
                 />
                 <BalanceCard
                     title="Monthly Outcome"
                     value={monthlyOutcome}
+                    currency={currency}
                 />
             </div>
 
@@ -181,9 +194,7 @@ export default function Dashboard() {
                     disabled={loading || transactions.length === 0}
                 />
 
-                <AddTransactionButton
-                    onClick={() => setIsModalOpen(true)}
-                />
+                <AddTransactionButton onClick={() => setIsModalOpen(true)} />
             </div>
 
             {/* Sort By */}
@@ -206,6 +217,7 @@ export default function Dashboard() {
                             transaction={tx}
                             onEdit={setEditingTransaction}
                             onDelete={handleDelete}
+                            currency={currency}
                         />
                     ))}
                 </ul>

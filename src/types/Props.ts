@@ -4,6 +4,7 @@ export type BalanceCardProps = {
     title: string;
     value: number;
     style?: string;
+    currency?: string;
 };
 
 export type FilterBarProps = {
@@ -22,6 +23,7 @@ export type TransactionItemProps = {
     transaction: Transaction;
     onEdit?: (transaction: Transaction) => void;
     onDelete?: (transaction: Transaction) => void;
+    currency?: string;
 };
 
 export type AddTransactionButtonProps = {

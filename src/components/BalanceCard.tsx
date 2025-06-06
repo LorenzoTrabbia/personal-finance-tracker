@@ -1,6 +1,6 @@
 import type { BalanceCardProps } from "../types/Props"
 
-function BalanceCard({ title, value, style }: BalanceCardProps) {
+function BalanceCard({ title, value, style, currency }: BalanceCardProps) {
     return (
         <div
             className={[
@@ -14,7 +14,7 @@ function BalanceCard({ title, value, style }: BalanceCardProps) {
                 .join(" ")}
         >
             <span className="text-base font-light mb-3">{title}</span>
-            <span className="text-2xl">€{value.toFixed(2)}</span>
+            <span className="text-2xl">{currency}{value.toFixed(2)}</span>
         </div>
     );
 }

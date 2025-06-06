@@ -6,7 +6,7 @@ import type { TransactionItemProps } from "../types/Props";
 // Icons
 import { ArrowDown, ArrowUp, EllipsisVertical, Pencil, Trash2 } from "lucide-react";
 
-export default function TransactionItem({ transaction, onEdit, onDelete }: TransactionItemProps) {
+export default function TransactionItem({ transaction, onEdit, onDelete, currency }: TransactionItemProps) {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +54,7 @@ export default function TransactionItem({ transaction, onEdit, onDelete }: Trans
             {/* Amount + actions menu */}
             <div className="flex items-center gap-2 relative" ref={menuRef}>
                 <div className={`text-sm font-semibold ${amountColor}`}>
-                    {isIncome ? "+" : "-"}€{transaction.amount.toFixed(2)}
+                    {isIncome ? "+" : "-"}{currency}{transaction.amount.toFixed(2)}
                 </div>
 
                 {/* Actions button */}
