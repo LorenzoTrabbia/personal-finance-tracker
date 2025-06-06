@@ -15,10 +15,13 @@ export type FilterBarProps = {
     setSelectedYear: (val: string) => void;
     availableCategories: string[];
     availableYears: number[];
+    disabled?: boolean;
 };
 
 export type TransactionItemProps = {
     transaction: Transaction;
+    onEdit?: (transaction: Transaction) => void;
+    onDelete?: (transaction: Transaction) => void;
 };
 
 export type AddTransactionButtonProps = {
@@ -28,7 +31,21 @@ export type AddTransactionButtonProps = {
 export type SortByProps = {
     sortBy: string;
     setSortBy: (val: string) => void;
+    disabled?: boolean;
 }
   
+export type AddTransactionModalProps = {
+    onClose: () => void;
+    existingTransaction?: Transaction | null;
+    onSaveSuccess?: () => void;
+};
+
+export type ConfirmDialogProps = {
+    open: boolean;
+    title: string;
+    description?: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+}
   
   

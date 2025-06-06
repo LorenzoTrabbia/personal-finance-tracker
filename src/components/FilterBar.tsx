@@ -14,6 +14,7 @@ export default function FilterBar({
     setSelectedYear,
     availableCategories,
     availableYears,
+    disabled = false
 }: FilterBarProps) {
     const resetFilters = () => {
         setSelectedCategory("");
@@ -29,8 +30,12 @@ export default function FilterBar({
                 <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="appearance-none w-full px-4 py-2 pr-10 rounded-md border border-gray-300 bg-white text-gray-700 
-                    shadow-2xs focus:outline-none focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent"
+                    disabled={disabled}
+                    className={`appearance-none w-full px-4 py-2 pr-10 rounded-md border shadow-2xs focus:outline-none transition
+                        ${disabled
+                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                            : 'bg-white text-gray-700 border-gray-300 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                        }`}
                 >
                     <option value="" disabled hidden>
                         Category
@@ -44,7 +49,7 @@ export default function FilterBar({
                 </select>
 
                 <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className={`h-4 w-4 ${disabled ? 'text-gray-300' : 'text-gray-500'}`} />
                 </div>
             </div>
 
@@ -53,8 +58,12 @@ export default function FilterBar({
                 <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(e.target.value)}
-                    className="appearance-none w-full px-4 py-2 pr-10 rounded-md border border-gray-300 bg-white text-gray-700 
-                    shadow-2xs focus:outline-none focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent"
+                    disabled={disabled}
+                    className={`appearance-none w-full px-4 py-2 pr-10 rounded-md border shadow-2xs focus:outline-none transition
+                        ${disabled
+                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                            : 'bg-white text-gray-700 border-gray-300 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                        }`}
                 >
                     <option value="" disabled hidden>
                         Month
@@ -68,7 +77,7 @@ export default function FilterBar({
                 </select>
 
                 <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className={`h-4 w-4 ${disabled ? 'text-gray-300' : 'text-gray-500'}`} />
                 </div>
             </div>
 
@@ -78,8 +87,12 @@ export default function FilterBar({
                 <select
                     value={selectedYear}
                     onChange={(e) => setSelectedYear(e.target.value)}
-                    className="appearance-none w-full px-4 py-2 pr-10 rounded-md border border-gray-300 bg-white text-gray-700 
-                    shadow-2xs focus:outline-none focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent"
+                    disabled={disabled}
+                    className={`appearance-none w-full px-4 py-2 pr-10 rounded-md border shadow-2xs focus:outline-none transition
+                        ${disabled
+                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                            : 'bg-white text-gray-700 border-gray-300 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                        }`}
                 >
                     <option value="" disabled hidden>
                         Year
@@ -93,14 +106,19 @@ export default function FilterBar({
                 </select>
 
                 <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className={`h-4 w-4 ${disabled ? 'text-gray-300' : 'text-gray-500'}`} />
                 </div>
             </div>
 
+            {/* Reset Filters Button */}
             {(selectedCategory || selectedMonth || selectedYear) && (
                 <button
                     onClick={resetFilters}
-                    className="mt-2 text-sm text-red-500 cursor-pointer hover:underline hover:opacity-90 transition"
+                    disabled={disabled}
+                    className={`mt-2 text-sm transition ${disabled
+                        ? 'text-gray-400 cursor-not-allowed'
+                        : 'text-red-500 cursor-pointer hover:underline hover:opacity-90'
+                        }`}
                 >
                     Reset Filters
                 </button>

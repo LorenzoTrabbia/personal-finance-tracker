@@ -4,10 +4,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 
 // Icons
-import { LayoutDashboard } from 'lucide-react';
-import { User } from 'lucide-react';
-import { Settings } from 'lucide-react';
-import { LogOut } from "lucide-react";
+import { LayoutDashboard, User, Settings, LogOut } from 'lucide-react';
 
 export default function Sidebar() {
     const navigate = useNavigate();

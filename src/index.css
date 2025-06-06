@@ -28,6 +28,11 @@
   --color-dark-border: #334155;
 }
 
+/* Hide default calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
 /* From Uiverse.io by JustCode14 */ 
 /* Theme Switch */
 /* The switch - the box around the slider */

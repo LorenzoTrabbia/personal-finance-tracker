@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, orderBy, doc, deleteDoc } from "firebase/firestore";
+import { AnimatePresence } from "framer-motion";
 
 // Types
 import type { Transaction } from "../types/Transaction";
@@ -13,20 +14,32 @@ import FilterBar from "../components/FilterBar";
 import TransactionItem from "../components/TransactionItem";
 import AddTransactionButton from "../components/AddTransactionButton";
 import SortBy from "../components/SortBy";
+import ConfirmDialog from "../components/ConfirmDialog";
+import Spinner from "../components/Spinner";
+import EmptyState from "../components/EmptyState";
 
 export default function Dashboard() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // Modal and transaction state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+    const [transactionToDelete, setTransactionToDelete] = useState<Transaction | null>(null);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+    // Balance and monthly calculations
     const [balance, setBalance] = useState(0);
+    const [monthlyIncome, setMonthlyIncome] = useState(0);
+    const [monthlyOutcome, setMonthlyOutcome] = useState(0);
+
+    // Filters
     const [sortBy, setSortBy] = useState("date_desc");
     const [availableCategories, setAvailableCategories] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedMonth, setSelectedMonth] = useState("");
     const [selectedYear, setSelectedYear] = useState("");
-    const [monthlyIncome, setMonthlyIncome] = useState(0);
-    const [monthlyOutcome, setMonthlyOutcome] = useState(0);
 
+    // Date filters
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
@@ -79,13 +92,54 @@ export default function Dashboard() {
         }
     };
 
+    const fetchTransactionsMemoized = useCallback(() => {
+        const user = auth.currentUser;
+        if (user) fetchTransactions(user.uid);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedCategory, selectedMonth, selectedYear, sortBy]);
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) fetchTransactions(user.uid);
         });
         return () => unsubscribe();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isModalOpen, sortBy, selectedCategory, selectedMonth, selectedYear]);
+    }, [sortBy, selectedCategory, selectedMonth, selectedYear]);
+
+    useEffect(() => {
+        fetchTransactionsMemoized();
+    }, [fetchTransactionsMemoized]);
+
+    const handleSaveSuccess = () => {
+        fetchTransactionsMemoized();
+    };
+
+    const handleDelete = (transaction: Transaction) => {
+        setTransactionToDelete(transaction);
+    };
+
+    const handleConfirmDelete = () => {
+        if (!transactionToDelete) return;
+
+        const user = auth.currentUser;
+        if (user) {
+            const transactionRef = doc(db, "users", user.uid, "transactions", transactionToDelete.id);
+            deleteDoc(transactionRef)
+                .then(() => {
+                    console.log("Transaction deleted successfully");
+                    fetchTransactionsMemoized();
+                    setTransactionToDelete(null);
+                })
+                .catch((error) => {
+                    console.error("Error deleting transaction:", error);
+                    setTransactionToDelete(null);
+                });
+        }
+    };
+
+    const handleCancelDelete = () => {
+        setTransactionToDelete(null);
+    };
 
     const userName = auth.currentUser?.displayName || "";
 
@@ -95,6 +149,7 @@ export default function Dashboard() {
                 {userName ? `Welcome, ${userName}!` : "Welcome!"}
             </h1>
 
+            {/* Balance Cards */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <BalanceCard
                     title="Total Balance"
@@ -112,7 +167,7 @@ export default function Dashboard() {
                 />
             </div>
 
-
+            {/* Filters and Add Transaction Button */}
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
                 <FilterBar
                     selectedCategory={selectedCategory}
@@ -123,6 +178,7 @@ export default function Dashboard() {
                     setSelectedYear={setSelectedYear}
                     availableCategories={availableCategories}
                     availableYears={availableYears}
+                    disabled={loading || transactions.length === 0}
                 />
 
                 <AddTransactionButton
@@ -130,24 +186,53 @@ export default function Dashboard() {
                 />
             </div>
 
+            {/* Sort By */}
             <SortBy
                 sortBy={sortBy}
                 setSortBy={setSortBy}
+                disabled={loading || transactions.length === 0}
             />
 
+            {/* Transaction List */}
             {loading ? (
-                <p>Loading...</p>
+                <Spinner />
             ) : transactions.length === 0 ? (
-                <p>No transaction found</p>
+                <EmptyState />
             ) : (
                 <ul className="space-y-2">
                     {transactions.map(tx => (
-                        <TransactionItem key={tx.id} transaction={tx} />
+                        <TransactionItem
+                            key={tx.id}
+                            transaction={tx}
+                            onEdit={setEditingTransaction}
+                            onDelete={handleDelete}
+                        />
                     ))}
                 </ul>
             )}
 
-            {isModalOpen && <AddTransactionModal onClose={() => setIsModalOpen(false)} />}
+            {/* Transaction Modal */}
+            <AnimatePresence>
+                {(isModalOpen || editingTransaction) && (
+                    <AddTransactionModal
+                        onClose={() => {
+                            setIsModalOpen(false);
+                            setEditingTransaction(null);
+                        }}
+                        existingTransaction={editingTransaction}
+                        onSaveSuccess={handleSaveSuccess}
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* Confirm Delete Dialog */}
+            <ConfirmDialog
+                open={!!transactionToDelete}
+                title="Delete Transaction"
+                description={`Are you sure you want to delete "${transactionToDelete?.name}"?`}
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+            />
         </div>
     );
 }
