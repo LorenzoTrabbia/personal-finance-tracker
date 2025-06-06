@@ -34,7 +34,7 @@ export default function TransactionItem({ transaction, onEdit, onDelete, currenc
     }, [menuOpen]);
 
     return (
-        <li className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-white dark:bg-dark-background rounded-xl px-4 py-3 shadow-sm">
+        <li className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-white dark:bg-dark-card rounded-xl px-4 py-3 shadow-sm">
             {/* Icon + name + date + category */}
             <div className="flex items-center gap-3">
                 <div className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800">

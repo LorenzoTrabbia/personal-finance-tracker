@@ -8,6 +8,7 @@ import { AppContext } from "./AppContext";
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     const [currency, setCurrency] = useState("€");
     const [userName, setUserName] = useState("");
+    const [avatar, setAvatar] = useState<string | null>(null);
 
     const fetchPreferences = async () => {
         const user = auth.currentUser;
@@ -22,6 +23,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             const data = snap.data();
             const found = currencyOptions.find(c => c.value === data.currency);
             setCurrency(found?.symbol || "€");
+            setAvatar(data.avatar || null);
         }
     };
 
@@ -33,7 +35,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     return (
-        <AppContext.Provider value={{ currency, setCurrency, userName, refreshPreferences: fetchPreferences }}>
+        <AppContext.Provider value={{ currency, setCurrency, userName, avatar, refreshPreferences: fetchPreferences }}>
             {children}
         </AppContext.Provider>
     );

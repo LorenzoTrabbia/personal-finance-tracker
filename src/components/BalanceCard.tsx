@@ -7,8 +7,8 @@ function BalanceCard({ title, value, style, currency }: BalanceCardProps) {
                 "relative p-4 rounded-xl shadow-md overflow-hidden flex flex-col justify-between w-full max-w-3xl",
                 "transition-transform hover:scale-105 duration-200",
                 style === "reverse"
-                    ? "text-dark-text-primary dark:text-light-text-primary bg-dark-secondary-background dark:bg-light-secondary-background"
-                    : "text-light-text-primary dark:text-dark-text-primary bg-light-secondary-background dark:bg-dark-secondary-background",
+                    ? "text-dark-text-primary dark:text-light-text-primary bg-dark-card dark:bg-light-secondary-background"
+                    : "text-light-text-primary dark:text-dark-text-primary bg-light-secondary-background dark:bg-dark-card",
             ]
                 .filter(Boolean)
                 .join(" ")}

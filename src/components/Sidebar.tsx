@@ -3,12 +3,17 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 
+// Context
+import { useAppContext } from "../context/useAppContext";
+
 // Icons
 import { LayoutDashboard, User, Settings, LogOut } from 'lucide-react';
 
 export default function Sidebar() {
     const navigate = useNavigate();
     const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const { avatar } = useAppContext();
 
     useEffect(() => {
         const theme = localStorage.getItem("theme");
@@ -55,9 +60,32 @@ export default function Sidebar() {
 
     return (
         <aside className="w-64 shadow-md min-h-screen p-4 py-8 hidden md:flex flex-col justify-between
-            bg-light-primary dark:bg-dark-primary  dark:border-r-2 dark:border-dark-border"
+            bg-light-primary dark:bg-dark-primary"
         >
             <nav className="flex flex-col space-y-4 mt-4">
+
+                {/* User profile */}
+                <div className="flex items-center mb-8 gap-4">
+                    <div className="relative group w-14 h-14 rounded-full overflow-hidden cursor-pointer shadow-lg transition-transform duration-300 hover:scale-110">
+                        <img
+                            src={`/avatars/${avatar}`}
+                            alt="User Avatar"
+                            className="w-full h-full"
+                        />
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                    </div>
+                    <div>
+                        <h1 className="text-white font-extrabold text-md tracking-widest select-none leading-tight">
+                            PERSONAL FINANCE
+                        </h1>
+                        <p className="text-indigo-200 text-xs font-semibold tracking-wider select-none">
+                            TRACKER
+                        </p>
+                    </div>
+                </div>
+
+
+                {/* Nav Links */}
                 <NavLink
                     to="/"
                     className={({ isActive }) =>

@@ -4,7 +4,7 @@
 @theme {
   /* LIGHT THEME */
   --color-light-white: #F1F5F9;
-  --color-light-primary: #1C2434; /* Sidebar */
+  --color-light-primary: #1B1F24; /* Sidebar */
   --color-light-secondary: #16A34A; /* Pulsanti positivi */
   --color-light-negative-value: #B91C1C; /* Rosso outcome */
   --color-light-positive-value: #16A34A; /* Verde income */
@@ -16,13 +16,13 @@
   --color-light-border: #E5E7EB;
 
   /* DARK THEME */
-  --color-dark-primary: #0B1120; /* Sidebar */
+  --color-dark-primary: #1B1F24; /* Sidebar */
   --color-dark-secondary: #22C55E; /* Pulsanti positivi */
   --color-dark-negative-value: #F87171;
   --color-dark-positive-value: #4ADE80;
-  --color-dark-background: #0F172A; /* Sfondo principale */
+  --color-dark-background: #10161B; /* Sfondo principale */
   --color-dark-secondary-background: #1E293B; /* Card */
-  --color-dark-card: #1E293B;
+  --color-dark-card: #1B1F24;
   --color-dark-text-primary: #F1F5F9;
   --color-dark-text-secondary: #94A3B8;
   --color-dark-border: #334155;

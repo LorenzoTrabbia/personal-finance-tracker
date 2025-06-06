@@ -4,6 +4,7 @@ type AppContextType = {
     currency: string;
     setCurrency: (currency: string) => void;
     userName: string;
+    avatar: string | null;
     refreshPreferences: () => Promise<void>;
 };
 
