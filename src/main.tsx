@@ -11,6 +11,7 @@ import Settings from "./pages/Settings.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import { AppProvider } from "./context/AppProvider.tsx";
+import Analytics from "./pages/Analytics.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           {/* ROUTE PROTETTE */}
           <Route path="/" element={<RequireAuth><App /></RequireAuth>}>
             <Route index element={<Dashboard />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="profile" element={<Profile />} />
             <Route path="settings" element={<Settings />} />
           </Route>

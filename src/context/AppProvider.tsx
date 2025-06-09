@@ -9,6 +9,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     const [currency, setCurrency] = useState("€");
     const [userName, setUserName] = useState("");
     const [avatar, setAvatar] = useState<string | null>(null);
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
     const fetchPreferences = async () => {
         const user = auth.currentUser;
@@ -28,6 +29,32 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     useEffect(() => {
+        const saved = localStorage.getItem("theme");
+        if (saved) {
+            document.documentElement.classList.toggle("dark", saved === "dark");
+            setIsDarkMode(saved === "dark");
+        } else {
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            document.documentElement.classList.toggle("dark", prefersDark);
+            setIsDarkMode(prefersDark);
+        }
+    }, []);
+
+    const toggleTheme = () => {
+        const html = document.documentElement;
+
+        if (html.classList.contains("dark")) {
+            html.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+            setIsDarkMode(false);
+        } else {
+            html.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+            setIsDarkMode(true);
+        }
+    };
+
+    useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) fetchPreferences();
         });
@@ -35,9 +62,16 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     return (
-        <AppContext.Provider value={{ currency, setCurrency, userName, avatar, refreshPreferences: fetchPreferences }}>
+        <AppContext.Provider value={{
+            currency,
+            setCurrency,
+            userName,
+            avatar,
+            refreshPreferences: fetchPreferences,
+            isDarkMode,
+            toggleTheme
+        }}>
             {children}
         </AppContext.Provider>
     );
 };
-

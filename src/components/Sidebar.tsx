@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
@@ -7,47 +6,13 @@ import { auth } from "../firebase";
 import { useAppContext } from "../context/useAppContext";
 
 // Icons
-import { LayoutDashboard, User, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, User, Settings, LogOut, ChartNoAxesColumn } from 'lucide-react';
 
 export default function Sidebar() {
     const navigate = useNavigate();
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const { isDarkMode, toggleTheme } = useAppContext();
 
     const { avatar } = useAppContext();
-
-    useEffect(() => {
-        const theme = localStorage.getItem("theme");
-        if (theme === "dark") {
-            document.documentElement.classList.add("dark");
-            setIsDarkMode(true);
-        }
-    }, []);
-
-    useEffect(() => {
-        const saved = localStorage.getItem("theme");
-        if (saved) {
-            document.documentElement.classList.toggle("dark", saved === "dark");
-            setIsDarkMode(saved === "dark");
-        } else {
-            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            document.documentElement.classList.toggle("dark", prefersDark);
-            setIsDarkMode(prefersDark);
-        }
-    }, []);
-
-    const toggleTheme = () => {
-        const html = document.documentElement;
-
-        if (html.classList.contains("dark")) {
-            html.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-            setIsDarkMode(false);
-        } else {
-            html.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-            setIsDarkMode(true);
-        }
-    };
 
     const handleLogout = async () => {
         try {
@@ -66,14 +31,16 @@ export default function Sidebar() {
 
                 {/* User profile */}
                 <div className="flex items-center mb-8 gap-4">
-                    <div className="relative group w-14 h-14 rounded-full overflow-hidden cursor-pointer shadow-lg transition-transform duration-300 hover:scale-110">
-                        <img
-                            src={`/avatars/${avatar}`}
-                            alt="User Avatar"
-                            className="w-full h-full"
-                        />
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                    </div>
+                    {avatar &&
+                        <div className="relative group w-14 h-14 rounded-full overflow-hidden cursor-pointer shadow-lg transition-transform duration-300 hover:scale-110">
+                            <img
+                                src={`/avatars/${avatar}`}
+                                alt="User Avatar"
+                                className="w-full h-full"
+                                onClick={() => navigate("/profile")}
+                            />
+                        </div>
+                    }
                     <div>
                         <h1 className="text-white font-extrabold text-md tracking-widest select-none leading-tight">
                             PERSONAL FINANCE
@@ -84,8 +51,7 @@ export default function Sidebar() {
                     </div>
                 </div>
 
-
-                {/* Nav Links */}
+                {/* Dashboard */}
                 <NavLink
                     to="/"
                     className={({ isActive }) =>
@@ -98,9 +64,42 @@ export default function Sidebar() {
                         ].join(" ")
                     }
                 >
-                    <LayoutDashboard className="inline mx-4 mr-6" />
-                    Dashboard
+                    {({ isActive }) => (
+                        <>
+                            <LayoutDashboard
+                                className={`inline mx-4 mr-6 ${isActive ? "text-blue-400" : "text-gray-400"
+                                    }`}
+                            />
+                            Dashboard
+                        </>
+                    )}
                 </NavLink>
+
+                {/* Analytics */}
+                <NavLink
+                    to="/analytics"
+                    className={({ isActive }) =>
+                        [
+                            "rounded-lg py-2",
+                            "transition-colors duration-200",
+                            isActive
+                                ? "font-bold text-light-white bg-slate-600"
+                                : "text-light-white hover:opacity-100 opacity-80"
+                        ].join(" ")
+                    }
+                >
+                    {({ isActive }) => (
+                        <>
+                            <ChartNoAxesColumn
+                                className={`inline mx-4 mr-6 ${isActive ? "text-blue-400" : "text-gray-400"
+                                    }`}
+                            />
+                            Analytics
+                        </>
+                    )}
+                </NavLink>
+
+                {/* Profile */}
                 <NavLink
                     to="/profile"
                     className={({ isActive }) =>
@@ -113,9 +112,18 @@ export default function Sidebar() {
                         ].join(" ")
                     }
                 >
-                    <User className="inline mx-4 mr-6" />
-                    Profile
+                    {({ isActive }) => (
+                        <>
+                            <User
+                                className={`inline mx-4 mr-6 ${isActive ? "text-blue-400" : "text-gray-400"
+                                    }`}
+                            />
+                            Profile
+                        </>
+                    )}
                 </NavLink>
+
+                {/* Settings */}
                 <NavLink
                     to="/settings"
                     className={({ isActive }) =>
@@ -128,9 +136,18 @@ export default function Sidebar() {
                         ].join(" ")
                     }
                 >
-                    <Settings className="inline mx-4 mr-6" />
-                    Settings
+                    {({ isActive }) => (
+                        <>
+                            <Settings
+                                className={`inline mx-4 mr-6 ${isActive ? "text-blue-400" : "text-gray-400"
+                                    }`}
+                            />
+                            Settings
+                        </>
+                    )}
                 </NavLink>
+
+                {/* Logout */}
                 <NavLink
                     to="/logout"
                     onClick={handleLogout}
@@ -141,6 +158,7 @@ export default function Sidebar() {
                 </NavLink>
             </nav>
 
+            {/* Dark Mode Toggle */}
             <div className="flex flex-col gap-2">
                 <label className="switch">
                     <input

@@ -13,8 +13,10 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { currencyOptions } from "../types/Currency";
 import { useAppContext } from "../context/useAppContext";
 import { updateTransactionsCurrency } from "../utils/updateTransactionsCurrency";
-import { Eye, EyeOff } from "lucide-react";
 import { avatars } from "../types/Avatars";
+
+// Icons
+import { ChevronDown, Eye, EyeOff } from "lucide-react";
 
 export default function Settings() {
     const user = auth.currentUser;
@@ -130,18 +132,24 @@ export default function Settings() {
                     placeholder="Your name"
                 />
 
-                <select
-                    value={currency}
-                    onChange={(e) => setCurrency(e.target.value)}
-                    className="border p-2 rounded bg-white dark:bg-dark-background"
-                >
-                    <option value="">Select currency</option>
-                    {currencyOptions.map((opt) => (
-                        <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                        </option>
-                    ))}
-                </select>
+                <div className="relative">
+                    <select
+                        value={currency}
+                        onChange={(e) => setCurrency(e.target.value)}
+                        className="border w-full appearance-none p-2 rounded bg-white dark:bg-dark-background"
+                    >
+                        <option value="">Select currency</option>
+                        {currencyOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </select>
+
+                    <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                        <ChevronDown className="w-5 h-5" />
+                    </div>
+                </div>
 
                 <div>
                     <label className="block text-sm font-medium mb-2">Choose your avatar:</label>

@@ -6,6 +6,19 @@ type AppContextType = {
     userName: string;
     avatar: string | null;
     refreshPreferences: () => Promise<void>;
+    isDarkMode: boolean;
+    toggleTheme: () => void;
 };
 
-export const AppContext = createContext<AppContextType | undefined>(undefined);
+const defaultContext: AppContextType = {
+    currency: '€',
+    setCurrency: () => {},
+    userName: '',
+    avatar: null,
+    refreshPreferences: async () => {},
+    isDarkMode: false,
+    toggleTheme: () => {},
+};
+
+export const AppContext = createContext<AppContextType>(defaultContext);
+

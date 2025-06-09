@@ -213,7 +213,6 @@ export default function AddTransactionModal({
                             Category
                         </label>
 
-                        {/* Wrapper isolato per select + icona */}
                         <div className="relative">
                             <select
                                 value={category}
@@ -236,7 +235,6 @@ export default function AddTransactionModal({
                                 <option value="other">Other</option>
                             </select>
 
-                            {/* Freccetta custom */}
                             <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
                                 <ChevronDown className="w-5 h-5" />
                             </div>
