@@ -1,15 +1,39 @@
 import { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { currencyOptions } from "../types/Currency";
 import { AppContext } from "./AppContext";
+import type { Transaction } from "../types/Transaction";
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
     const [currency, setCurrency] = useState("€");
     const [userName, setUserName] = useState("");
     const [avatar, setAvatar] = useState<string | null>(null);
     const [isDarkMode, setIsDarkMode] = useState(false);
+
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [loadingTransactions, setLoadingTransactions] = useState<boolean>(false);
+
+    const fetchTransactions = async () => {
+        const user = auth.currentUser;
+        if (!user?.uid) return;
+
+        setLoadingTransactions(true);
+        try {
+            const q = query(
+                collection(db, "users", user.uid, "transactions"),
+                orderBy("date", "desc")
+            );
+            const snapshot = await getDocs(q);
+            const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Transaction[];
+            setTransactions(data);
+        } catch (error) {
+            console.error("Errore nel recupero transazioni:", error);
+        } finally {
+            setLoadingTransactions(false);
+        }
+    };
 
     const fetchPreferences = async () => {
         const user = auth.currentUser;
@@ -56,7 +80,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) fetchPreferences();
+            if (user) {
+                fetchPreferences();
+                fetchTransactions();
+            }
         });
         return () => unsubscribe();
     }, []);
@@ -69,7 +96,10 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             avatar,
             refreshPreferences: fetchPreferences,
             isDarkMode,
-            toggleTheme
+            toggleTheme,
+            transactions,
+            fetchTransactions,
+            loadingTransactions
         }}>
             {children}
         </AppContext.Provider>

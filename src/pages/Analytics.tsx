@@ -1,42 +1,19 @@
-import { useEffect, useState } from 'react';
-import { collection, getDocs, query } from 'firebase/firestore';
-import type { Transaction } from '../types/Transaction';
-import { auth, db } from '../firebase';
+import { useContext, useState } from 'react';
+import { AppContext } from '../context/AppContext';
+
+// Components
 import { BalanceOverTimeChart, ExpensesByCategoryBarChart, ExpensesByCategoryChart, IncomeExpenseChart } from '../components/AnaliticCharts';
 import Spinner from '../components/Spinner';
+
+// Icons
 import { ChevronDown } from 'lucide-react';
 
 const AnalyticsPage = () => {
-    const user = auth.currentUser;
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [categories, setCategories] = useState<string[]>([]);
+    const { transactions, loadingTransactions } = useContext(AppContext);
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [selectedPeriod, setSelectedPeriod] = useState<string>('all');
-    const [loading, setLoading] = useState<boolean>(true);
 
-    useEffect(() => {
-        const fetchTransactions = async () => {
-            if (!user) return;
-            try {
-                const q = query(
-                    collection(db, 'users', user.uid, 'transactions')
-                );
-                const querySnapshot = await getDocs(q);
-                const fetchedTransactions = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Transaction[];
-                setTransactions(fetchedTransactions);
-
-                const uniqueCategories = Array.from(new Set(fetchedTransactions.map(tx => tx.category)));
-                setCategories(uniqueCategories);
-
-            } catch (error) {
-                console.error('Error fetching transactions:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchTransactions();
-    }, [user]);
+    const categories = Array.from(new Set(transactions.map(tx => tx.category)));
 
     const getFilteredTransactions = () => {
         return transactions.filter((transaction) => {
@@ -65,33 +42,6 @@ const AnalyticsPage = () => {
         });
     };
 
-    // const getPeriodFilteredTransactions = () => {
-    //     return transactions.filter((transaction) => {
-    //         const transactionDate = new Date(transaction.date);
-    //         const now = new Date();
-
-    //         if (selectedPeriod === 'lastMonth') {
-    //             const lastMonth = new Date();
-    //             lastMonth.setMonth(now.getMonth() - 1);
-    //             return transactionDate >= lastMonth;
-    //         } else if (selectedPeriod === 'last3Months') {
-    //             const last3Months = new Date();
-    //             last3Months.setMonth(now.getMonth() - 3);
-    //             return transactionDate >= last3Months;
-    //         } else if (selectedPeriod === 'last6Months') {
-    //             const last6Months = new Date();
-    //             last6Months.setMonth(now.getMonth() - 6);
-    //             return transactionDate >= last6Months;
-    //         } else if (selectedPeriod === 'thisYear') {
-    //             return transactionDate.getFullYear() === now.getFullYear();
-    //         }
-
-    //         return true; // "all"
-    //     });
-    // };
-
-    // const periodFilteredTransactions = getPeriodFilteredTransactions();
-
     const filteredTransactions = getFilteredTransactions();
 
     return (
@@ -99,7 +49,7 @@ const AnalyticsPage = () => {
             <h1 className="text-4xl font-semibold mb-8 text-light-primary dark:text-dark-text-primary">
                 Analytics
             </h1>
-            {loading ? (
+            {loadingTransactions ? (
                 <Spinner />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

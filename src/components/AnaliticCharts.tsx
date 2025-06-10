@@ -161,6 +161,14 @@ export const ExpensesByCategoryChart = ({ transactions }: { transactions: Transa
         return acc;
     }, [] as { category: string; amount: number }[]);
 
+    if (expenseData.length === 0) {
+        return (
+            <div className="w-full h-[250px] flex items-center justify-center text-gray-400">
+                No expenses recorded for the filters applied.
+            </div>
+        );
+    }
+
     return (
         <ResponsiveContainer width="100%" height={250}>
             <PieChart>
@@ -207,6 +215,14 @@ export const ExpensesByCategoryBarChart = ({ transactions }: { transactions: Tra
         }, [] as { category: string; amount: number }[]);
 
     const isMobile = window.innerWidth < 640;
+
+    if (expenseData.length === 0) {
+        return (
+            <div className="w-full h-[250px] flex items-center justify-center text-gray-400">
+                No expenses recorded for the filters applied.
+            </div>
+        );
+    }
 
     return (
         <ResponsiveContainer width="100%" height={300}>

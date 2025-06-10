@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import type { Transaction } from "../types/Transaction";
 
 type AppContextType = {
     currency: string;
@@ -8,6 +9,9 @@ type AppContextType = {
     refreshPreferences: () => Promise<void>;
     isDarkMode: boolean;
     toggleTheme: () => void;
+    transactions: Transaction[];
+    fetchTransactions: () => Promise<void>;
+    loadingTransactions: boolean;
 };
 
 const defaultContext: AppContextType = {
@@ -18,6 +22,9 @@ const defaultContext: AppContextType = {
     refreshPreferences: async () => {},
     isDarkMode: false,
     toggleTheme: () => {},
+    transactions: [],
+    fetchTransactions: async () => {},
+    loadingTransactions: true
 };
 
 export const AppContext = createContext<AppContextType>(defaultContext);

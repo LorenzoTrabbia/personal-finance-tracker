@@ -1,14 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { auth, db } from "../firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import {
-    collection,
-    getDocs,
-    query,
-    orderBy,
-    doc,
-    deleteDoc
-} from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { AnimatePresence } from "framer-motion";
 
 // Types
@@ -29,123 +21,103 @@ import EmptyState from "../components/EmptyState";
 import { useAppContext } from "../context/useAppContext";
 
 export default function Dashboard() {
-    const { currency, userName } = useAppContext();
+    const { currency, userName, transactions, fetchTransactions, loadingTransactions } = useAppContext();
 
-    const [loading, setLoading] = useState(true);
-
-    // Modal and transaction state
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
     const [transactionToDelete, setTransactionToDelete] = useState<Transaction | null>(null);
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-    // Balance and monthly calculations
-    const [balance, setBalance] = useState(0);
-    const [monthlyIncome, setMonthlyIncome] = useState(0);
-    const [monthlyOutcome, setMonthlyOutcome] = useState(0);
-
-    // Filters
     const [sortBy, setSortBy] = useState("date_desc");
-    const [availableCategories, setAvailableCategories] = useState<string[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [selectedMonth, setSelectedMonth] = useState("");
     const [selectedYear, setSelectedYear] = useState("");
 
-    // Date filters
+    // Date helpers
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
-    const availableYears = [...new Set(transactions.map(t => new Date(t.date).getFullYear()))];
 
-    const fetchTransactions = async (userId: string) => {
-        setLoading(true);
-        try {
-            const q = query(
-                collection(db, "users", userId, "transactions"),
-                orderBy("date", "desc")
-            );
-            const snapshot = await getDocs(q);
-            const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Transaction[];
-
-            let filtered = [...data];
-            if (selectedCategory) filtered = filtered.filter(t => t.category === selectedCategory);
-            if (selectedMonth) filtered = filtered.filter(t => new Date(t.date).getMonth() + 1 === parseInt(selectedMonth));
-            if (selectedYear) filtered = filtered.filter(t => new Date(t.date).getFullYear() === parseInt(selectedYear));
-
-            const sorted = filtered.sort((a, b) => {
-                switch (sortBy) {
-                    case "date_asc": return new Date(a.date).getTime() - new Date(b.date).getTime();
-                    case "amount_asc": return a.amount - b.amount;
-                    case "amount_desc": return b.amount - a.amount;
-                    case "date_desc":
-                    default: return new Date(b.date).getTime() - new Date(a.date).getTime();
-                }
-            });
-
-            setTransactions(sorted);
-            setAvailableCategories(Array.from(new Set(data.map(t => t.category))));
-
-            setBalance(data.reduce((acc, tx) => tx.type === "income" ? acc + tx.amount : acc - tx.amount, 0));
-
-            setMonthlyIncome(
-                data.filter(t => t.type === "income" && new Date(t.date).getMonth() === currentMonth && new Date(t.date).getFullYear() === currentYear)
-                    .reduce((acc, tx) => acc + tx.amount, 0)
-            );
-
-            setMonthlyOutcome(
-                data.filter(t => t.type === "expense" && new Date(t.date).getMonth() === currentMonth && new Date(t.date).getFullYear() === currentYear)
-                    .reduce((acc, tx) => acc + tx.amount, 0)
-            );
-
-        } catch (error) {
-            console.error("Errore nel recupero delle transazioni:", error);
-        } finally {
-            setLoading(false);
+    // Filtered, Sorted Transactions (Memoized)
+    const filteredTransactions = useMemo(() => {
+        let filtered = [...transactions];
+        if (selectedCategory) {
+            filtered = filtered.filter(t => t.category === selectedCategory);
         }
-    };
+        if (selectedMonth) {
+            filtered = filtered.filter(t => new Date(t.date).getMonth() + 1 === parseInt(selectedMonth));
+        }
+        if (selectedYear) {
+            filtered = filtered.filter(t => new Date(t.date).getFullYear() === parseInt(selectedYear));
+        }
 
-    const fetchTransactionsMemoized = useCallback(() => {
-        const user = auth.currentUser;
-        if (user) fetchTransactions(user.uid);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedCategory, selectedMonth, selectedYear, sortBy]);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) fetchTransactions(user.uid);
+        return filtered.sort((a, b) => {
+            switch (sortBy) {
+                case "date_asc": return new Date(a.date).getTime() - new Date(b.date).getTime();
+                case "amount_asc": return a.amount - b.amount;
+                case "amount_desc": return b.amount - a.amount;
+                case "date_desc":
+                default: return new Date(b.date).getTime() - new Date(a.date).getTime();
+            }
         });
-        return () => unsubscribe();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sortBy, selectedCategory, selectedMonth, selectedYear]);
+    }, [transactions, selectedCategory, selectedMonth, selectedYear, sortBy]);
 
-    useEffect(() => {
-        fetchTransactionsMemoized();
-    }, [fetchTransactionsMemoized]);
+    // Categories & Years
+    const availableCategories = useMemo(
+        () => Array.from(new Set(transactions.map(t => t.category))),
+        [transactions]
+    );
+    const availableYears = useMemo(
+        () => Array.from(new Set(transactions.map(t => new Date(t.date).getFullYear()))),
+        [transactions]
+    );
 
+    // Calculations
+    const balance = useMemo(() =>
+        transactions.reduce((acc, tx) =>
+            tx.type === "income" ? acc + tx.amount : acc - tx.amount, 0),
+        [transactions]
+    );
+
+    const monthlyIncome = useMemo(() =>
+        transactions
+            .filter(t =>
+                t.type === "income" &&
+                new Date(t.date).getMonth() === currentMonth &&
+                new Date(t.date).getFullYear() === currentYear
+            )
+            .reduce((acc, tx) => acc + tx.amount, 0),
+        [transactions, currentMonth, currentYear]
+    );
+
+    const monthlyOutcome = useMemo(() =>
+        transactions
+            .filter(t =>
+                t.type === "expense" &&
+                new Date(t.date).getMonth() === currentMonth &&
+                new Date(t.date).getFullYear() === currentYear
+            )
+            .reduce((acc, tx) => acc + tx.amount, 0),
+        [transactions, currentMonth, currentYear]
+    );
+
+    // Actions
     const handleSaveSuccess = () => {
-        fetchTransactionsMemoized();
+        fetchTransactions();
     };
 
     const handleDelete = (transaction: Transaction) => {
         setTransactionToDelete(transaction);
     };
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         if (!transactionToDelete) return;
 
         const user = auth.currentUser;
         if (user) {
             const transactionRef = doc(db, "users", user.uid, "transactions", transactionToDelete.id);
-            deleteDoc(transactionRef)
-                .then(() => {
-                    console.log("Transaction deleted successfully");
-                    fetchTransactionsMemoized();
-                    setTransactionToDelete(null);
-                })
-                .catch((error) => {
-                    console.error("Error deleting transaction:", error);
-                    setTransactionToDelete(null);
-                });
+            await deleteDoc(transactionRef);
+            fetchTransactions();
+            setTransactionToDelete(null);
         }
     };
 
@@ -161,26 +133,12 @@ export default function Dashboard() {
 
             {/* Balance Cards */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <BalanceCard
-                    title="Total Balance"
-                    value={balance}
-                    style="reverse"
-                    currency={currency}
-                />
-
-                <BalanceCard
-                    title="Monthly Income"
-                    value={monthlyIncome}
-                    currency={currency}
-                />
-                <BalanceCard
-                    title="Monthly Outcome"
-                    value={monthlyOutcome}
-                    currency={currency}
-                />
+                <BalanceCard title="Total Balance" value={balance} style="reverse" currency={currency} />
+                <BalanceCard title="Monthly Income" value={monthlyIncome} currency={currency} />
+                <BalanceCard title="Monthly Outcome" value={monthlyOutcome} currency={currency} />
             </div>
 
-            {/* Filters and Add Transaction Button */}
+            {/* Filters and Add Button */}
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
                 <FilterBar
                     selectedCategory={selectedCategory}
@@ -191,9 +149,8 @@ export default function Dashboard() {
                     setSelectedYear={setSelectedYear}
                     availableCategories={availableCategories}
                     availableYears={availableYears}
-                    disabled={loading || transactions.length === 0}
+                    disabled={loadingTransactions || transactions.length === 0}
                 />
-
                 <AddTransactionButton onClick={() => setIsModalOpen(true)} />
             </div>
 
@@ -201,17 +158,17 @@ export default function Dashboard() {
             <SortBy
                 sortBy={sortBy}
                 setSortBy={setSortBy}
-                disabled={loading || transactions.length === 0}
+                disabled={loadingTransactions || transactions.length === 0}
             />
 
-            {/* Transaction List */}
-            {loading ? (
+            {/* Transactions */}
+            {loadingTransactions ? (
                 <Spinner />
-            ) : transactions.length === 0 ? (
+            ) : filteredTransactions.length === 0 ? (
                 <EmptyState />
             ) : (
                 <ul className="space-y-2">
-                    {transactions.map(tx => (
+                    {filteredTransactions.map(tx => (
                         <TransactionItem
                             key={tx.id}
                             transaction={tx}
@@ -223,7 +180,7 @@ export default function Dashboard() {
                 </ul>
             )}
 
-            {/* Transaction Modal */}
+            {/* Modals */}
             <AnimatePresence>
                 {(isModalOpen || editingTransaction) && (
                     <AddTransactionModal
