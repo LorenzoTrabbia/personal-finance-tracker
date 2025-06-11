@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 // Components
-import { BalanceOverTimeChart, ExpensesByCategoryBarChart, ExpensesByCategoryChart, IncomeExpenseChart } from '../components/AnaliticCharts';
+import { BalanceOverTimeChart, ExpensesByCategoryBarChart, ExpensesByCategoryChart, IncomeExpenseChart } from '../components/AnalyticCharts';
 import Spinner from '../components/Spinner';
 
 // Icons

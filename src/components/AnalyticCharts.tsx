@@ -1,7 +1,24 @@
-import { ResponsiveContainer, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart, Pie, Cell, Legend, CartesianGrid, Area, AreaChart } from 'recharts';
-import type { Transaction } from '../types/Transaction';
-import { AppContext } from '../context/AppContext';
 import { useContext } from 'react';
+import { ResponsiveContainer, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart, Pie, Cell, Legend, CartesianGrid, Area, AreaChart } from 'recharts';
+import { AppContext } from '../context/AppContext';
+import { motion } from 'framer-motion';
+
+// Types
+import type { Transaction } from '../types/Transaction';
+
+// Icons
+import { CircleAlert } from 'lucide-react';
+
+export const EmptyState = ({ message }: { message: string }) => (
+    <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full h-full flex flex-col items-center justify-center text-gray-400"
+    >
+        <CircleAlert size={40} className="mb-2" />
+        <p className="text-center text-sm">{message}</p>
+    </motion.div>
+);
 
 // Balance Over Time Chart
 export const BalanceOverTimeChart = ({ transactions }: { transactions: Transaction[] }) => {
@@ -28,6 +45,14 @@ export const BalanceOverTimeChart = ({ transactions }: { transactions: Transacti
         cumulative += item.balance;
         return { month: item.month, balance: cumulative };
     });
+
+    if (sortedData.length === 0) {
+        return (
+            <div className="w-full h-[250px]">
+                <EmptyState message="No transactions recorded for the filters applied." />
+            </div>
+        );
+    }
 
     return (
         <ResponsiveContainer width="100%" height={250}>
@@ -88,6 +113,14 @@ export const IncomeExpenseChart = ({ transactions }: { transactions: Transaction
     }, [] as { month: string; income: number; expense: number }[]);
 
     const sortedData = data.sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime());
+
+    if (sortedData.length === 0) {
+        return (
+            <div className="w-full h-[250px]">
+                <EmptyState message="No transactions recorded for the filters applied." />
+            </div>
+        );
+    }
 
     return (
         <ResponsiveContainer width="100%" height={250}>
@@ -163,8 +196,8 @@ export const ExpensesByCategoryChart = ({ transactions }: { transactions: Transa
 
     if (expenseData.length === 0) {
         return (
-            <div className="w-full h-[250px] flex items-center justify-center text-gray-400">
-                No expenses recorded for the filters applied.
+            <div className="w-full h-[250px]">
+                <EmptyState message="No expenses recorded for the filters applied." />
             </div>
         );
     }
@@ -218,8 +251,8 @@ export const ExpensesByCategoryBarChart = ({ transactions }: { transactions: Tra
 
     if (expenseData.length === 0) {
         return (
-            <div className="w-full h-[250px] flex items-center justify-center text-gray-400">
-                No expenses recorded for the filters applied.
+            <div className="w-full h-[250px]">
+                <EmptyState message="No expenses recorded for the filters applied." />
             </div>
         );
     }
