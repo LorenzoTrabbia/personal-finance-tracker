@@ -49,5 +49,7 @@ export type ConfirmDialogProps = {
     onConfirm: () => void;
     onCancel: () => void;
 }
-  
-  
+
+export type EmptyStateProps = {
+    isSearching?: boolean;
+}; 

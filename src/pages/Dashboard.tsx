@@ -32,6 +32,8 @@ export default function Dashboard() {
     const [selectedMonth, setSelectedMonth] = useState("");
     const [selectedYear, setSelectedYear] = useState("");
 
+    const [searchQuery, setSearchQuery] = useState("");
+
     // Date helpers
     const now = new Date();
     const currentMonth = now.getMonth();
@@ -40,6 +42,7 @@ export default function Dashboard() {
     // Filtered, Sorted Transactions (Memoized)
     const filteredTransactions = useMemo(() => {
         let filtered = [...transactions];
+
         if (selectedCategory) {
             filtered = filtered.filter(t => t.category === selectedCategory);
         }
@@ -48,6 +51,11 @@ export default function Dashboard() {
         }
         if (selectedYear) {
             filtered = filtered.filter(t => new Date(t.date).getFullYear() === parseInt(selectedYear));
+        }
+        if (searchQuery.trim() !== "") {
+            filtered = filtered.filter(t =>
+                t.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
         }
 
         return filtered.sort((a, b) => {
@@ -59,7 +67,8 @@ export default function Dashboard() {
                 default: return new Date(b.date).getTime() - new Date(a.date).getTime();
             }
         });
-    }, [transactions, selectedCategory, selectedMonth, selectedYear, sortBy]);
+    }, [transactions, selectedCategory, selectedMonth, selectedYear, sortBy, searchQuery]);
+
 
     // Categories & Years
     const availableCategories = useMemo(
@@ -161,11 +170,22 @@ export default function Dashboard() {
                 disabled={loadingTransactions || transactions.length === 0}
             />
 
+            {/* Search Bar */}
+            <div className="mb-6">
+                <input
+                    type="text"
+                    placeholder="Search by name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full p-2 border rounded-md dark:bg-dark-bg-secondary dark:text-dark-text-primary border-gray-300 dark:border-gray-600"
+                />
+            </div>
+
             {/* Transactions */}
             {loadingTransactions ? (
                 <Spinner />
             ) : filteredTransactions.length === 0 ? (
-                <EmptyState />
+                <EmptyState isSearching={searchQuery.trim() !== ""} />
             ) : (
                 <ul className="space-y-2">
                     {filteredTransactions.map(tx => (
