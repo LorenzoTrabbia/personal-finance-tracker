@@ -26,15 +26,15 @@ export default function FilterBar({
         <div className="flex flex-col sm:flex-row sm:items-end gap-4 w-full flex-wrap">
 
             {/* Categories filter */}
-            <div className="relative w-48">
+            <div className="relative w-full sm:w-48">
                 <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     disabled={disabled}
-                    className={`appearance-none w-full px-4 py-2 pr-10 rounded-md border shadow-2xs focus:outline-none transition
+                    className={`appearance-none w-full px-2 py-1 sm:px-4 sm:py-2 pr-8 sm:pr-10 rounded-md border shadow-2xs focus:outline-none className="w-full p-2 transition duration-300"
                         ${disabled
                             ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                            : 'bg-white text-gray-700 border-gray-300 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                            : 'bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
                         }`}
                 >
                     <option value="" disabled hidden>
@@ -54,15 +54,15 @@ export default function FilterBar({
             </div>
 
             {/* Months filter */}
-            <div className="relative w-48">
+            <div className="relative w-full sm:w-48">
                 <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(e.target.value)}
                     disabled={disabled}
-                    className={`appearance-none w-full px-4 py-2 pr-10 rounded-md border shadow-2xs focus:outline-none transition
+                    className={`appearance-none w-full px-2 py-1 sm:px-4 sm:py-2 pr-8 sm:pr-10 rounded-md border shadow-2xs focus:outline-none transition
                         ${disabled
                             ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                            : 'bg-white text-gray-700 border-gray-300 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                            : 'bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
                         }`}
                 >
                     <option value="" disabled hidden>
@@ -83,15 +83,15 @@ export default function FilterBar({
 
 
             {/* Years filter */}
-            <div className="relative w-48">
+            <div className="relative w-full sm:w-48">
                 <select
                     value={selectedYear}
                     onChange={(e) => setSelectedYear(e.target.value)}
                     disabled={disabled}
-                    className={`appearance-none w-full px-4 py-2 pr-10 rounded-md border shadow-2xs focus:outline-none transition
+                    className={`appearance-none w-full px-2 py-1 sm:px-4 sm:py-2 pr-8 sm:pr-10 rounded-md border shadow-2xs focus:outline-none transition
                         ${disabled
                             ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                            : 'bg-white text-gray-700 border-gray-300 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                            : 'bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
                         }`}
                 >
                     <option value="" disabled hidden>

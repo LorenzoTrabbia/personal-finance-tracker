@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, useOutlet } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useSwipeable } from 'react-swipeable';
 
 // Hooks
 import { useMediaQuery } from "./hooks/useMediaQuery";
@@ -23,8 +24,20 @@ function App() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handlers = useSwipeable({
+    onSwipedRight: () => {
+      if (!isSidebarOpen) toggleSidebar();
+    },
+    onSwipedLeft: () => {
+      if (isSidebarOpen) toggleSidebar();
+    },
+    delta: 50,
+    preventScrollOnSwipe: true,
+    trackTouch: true,
+  });
+
   return (
-    <div className="flex min-h-screen bg-light-background dark:bg-dark-background transition duration-300">
+    <div {...handlers} className="flex min-h-screen bg-light-background dark:bg-dark-background transition duration-300">
       {!hideSidebar && !isMobile && <Sidebar />}
 
       {!hideSidebar && isMobile && (
@@ -32,7 +45,6 @@ function App() {
           <button onClick={toggleSidebar}>
             <Menu className="text-white w-6 h-6" />
           </button>
-          <h1 className="ml-4 text-white font-bold">Menu</h1>
         </div>
       )}
 
