@@ -54,21 +54,32 @@ function App() {
 
       <AnimatePresence>
         {!hideSidebar && isMobile && isSidebarOpen && (
-          <motion.div
-            initial={{ x: "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ type: "tween", duration: 0.3 }}
-            className="fixed top-0 left-0 w-64 h-full bg-light-primary dark:bg-dark-primary shadow-lg z-50 p-4 py-8 flex flex-col justify-between"
-          >
-            <SidebarContent closeSidebar={toggleSidebar} />
-            <button
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
               onClick={toggleSidebar}
-              className="absolute top-4 right-4 text-white text-2xl"
+              className="fixed inset-0 bg-black z-40 cursor-pointer"
+            />
+
+            <motion.div
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              className="fixed top-0 left-0 w-64 h-full bg-light-primary dark:bg-dark-primary shadow-lg z-50 p-4 py-8 flex flex-col justify-between"
             >
-              ✕
-            </button>
-          </motion.div>
+              <SidebarContent closeSidebar={toggleSidebar} />
+              <button
+                onClick={toggleSidebar}
+                className="absolute top-4 right-4 text-white text-2xl"
+              >
+                ✕
+              </button>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
