@@ -135,7 +135,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="p-10 max-w-6xl mx-auto text-light-text-primary dark:text-dark-text-primary">
+        <div className="p-10 max-w-6xl mx-auto text-light-text-primary dark:text-dark-text-primary transition duration-300">
             <h1 className="text-4xl font-semibold mb-10 text-light-primary dark:text-dark-text-primary">
                 {userName ? `Welcome, ${userName}!` : "Welcome!"}
             </h1>
@@ -177,7 +177,7 @@ export default function Dashboard() {
                     placeholder="Search by name..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full p-2 border rounded-md dark:bg-dark-bg-secondary dark:text-dark-text-primary border-gray-300 dark:border-gray-600"
+                    className="w-full p-2 border rounded-md dark:bg-dark-bg-secondary text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600"
                 />
             </div>
 

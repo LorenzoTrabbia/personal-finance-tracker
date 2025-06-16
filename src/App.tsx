@@ -1,24 +1,73 @@
+import { useState } from "react";
 import { useLocation, useOutlet } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
 import { AnimatePresence, motion } from "framer-motion";
+
+// Hooks
+import { useMediaQuery } from "./hooks/useMediaQuery";
+
+// Components
+import Sidebar from "./components/Sidebar";
+
+// Icons
+import { Menu } from "lucide-react";
+import SidebarContent from "./components/SidebarContent";
 
 function App() {
   const location = useLocation();
   const outlet = useOutlet();
   const hideSidebar = location.pathname === "/login" || location.pathname === "/signup";
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-    <div className="flex min-h-screen bg-light-background dark:bg-dark-background">
-      {!hideSidebar && <Sidebar />}
-      <main className="flex-1 p-6 overflow-y-auto overflow-x-hidden relative">
-        <AnimatePresence mode="wait" initial={false}>
+    <div className="flex min-h-screen bg-light-background dark:bg-dark-background transition duration-300">
+      {!hideSidebar && !isMobile && <Sidebar />}
+
+      {!hideSidebar && isMobile && (
+        <div className="fixed top-0 left-0 w-full h-14 bg-light-primary dark:bg-dark-primary shadow-md flex items-center px-4 z-50">
+          <button onClick={toggleSidebar}>
+            <Menu className="text-white w-6 h-6" />
+          </button>
+          <h1 className="ml-4 text-white font-bold">Menu</h1>
+        </div>
+      )}
+
+      <AnimatePresence>
+        {!hideSidebar && isMobile && isSidebarOpen && (
+          <motion.div
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+            className="fixed top-0 left-0 w-64 h-full bg-light-primary dark:bg-dark-primary shadow-lg z-50 p-4 py-8 flex flex-col justify-between"
+          >
+            <SidebarContent closeSidebar={toggleSidebar} />
+            <button
+              onClick={toggleSidebar}
+              className="absolute top-4 right-4 text-white text-2xl"
+            >
+              ✕
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <main className="flex-1 p-6 overflow-y-auto overflow-x-hidden relative pt-14 md:pt-0">
+        <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo({ top: 0, left: 0, behavior: "smooth" })}>
           <motion.div
             key={location.pathname}
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0"
+            className={[
+              "absolute inset-0",
+              isMobile ? "pt-14" : "",
+            ].join(" ")}
           >
             {outlet}
           </motion.div>

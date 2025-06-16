@@ -2,16 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App.tsx";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
 
 import "./index.css";
+
+// Pages
+import Dashboard from "./pages/Dashboard";
+import Analytics from "./pages/Analytics.tsx";
 import Profile from "./pages/Profile.tsx";
 import Settings from "./pages/Settings.tsx";
-import RequireAuth from "./components/RequireAuth.tsx";
 import SignUp from "./pages/SignUp.tsx";
+import Login from "./pages/Login";
+
+// Components
+import RequireAuth from "./components/RequireAuth.tsx";
 import { AppProvider } from "./context/AppProvider.tsx";
-import Analytics from "./pages/Analytics.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

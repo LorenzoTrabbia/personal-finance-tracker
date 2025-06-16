@@ -12,8 +12,8 @@ export default function TransactionItem({ transaction, onEdit, onDelete, currenc
 
     const isIncome = transaction.type === "income";
     const amountColor = isIncome
-        ? "text-green-500 dark:text-green-400"
-        : "text-red-500 dark:text-red-400";
+        ? "text-light-positive-value dark:text-dark-positive-value"
+        : "text-light-negative-value dark:text-dark-negative-value";
 
     const Icon = isIncome ? ArrowDown : ArrowUp;
 
@@ -34,17 +34,17 @@ export default function TransactionItem({ transaction, onEdit, onDelete, currenc
     }, [menuOpen]);
 
     return (
-        <li className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-white dark:bg-dark-card rounded-xl px-4 py-3 shadow-sm">
+        <li className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-white dark:bg-dark-card rounded-xl px-4 py-3 shadow-sm transition duration-300">
             {/* Icon + name + date + category */}
             <div className="flex items-center gap-3">
-                <div className="p-1.5 rounded-full bg-gray-100 dark:bg-gray-800">
+                <div className="p-1.5 rounded-full bg-light-border dark:bg-dark-border">
                     <Icon className={`w-4 h-4 ${amountColor}`} />
                 </div>
                 <div className="flex flex-col text-sm">
-                    <span className="font-medium text-gray-900 dark:text-white">{transaction.name}</span>
+                    <span className="font-medium text-light-text-primary dark:text-dark-text-primary">{transaction.name}</span>
                     <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                         <span>{new Date(transaction.date).toLocaleDateString()}</span>
-                        <span className="px-2 py-0.5 text-xs bg-gray-200 dark:bg-gray-700 rounded-full">
+                        <span className="px-2 py-0.5 text-xs bg-light-border dark:bg-dark-border rounded-full">
                             {transaction.category}
                         </span>
                     </div>

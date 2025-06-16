@@ -119,7 +119,7 @@ export default function Settings() {
     const isPasswordUser = user?.providerData[0]?.providerId === "password";
 
     return (
-        <div className="max-w-md mx-auto mt-10 bg-light-background dark:bg-dark-background p-6 rounded shadow text-light-text-primary dark:text-dark-text-primary">
+        <div className="max-w-lg mx-auto p-10 bg-light-background dark:bg-dark-background rounded shadow text-light-text-primary dark:text-dark-text-primary">
             <h2 className="text-2xl font-bold mb-4">Profile Settings</h2>
 
             {/* Form for displayName and currency */}
@@ -128,7 +128,7 @@ export default function Settings() {
                     type="text"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
-                    className="border p-2 rounded bg-white dark:bg-dark-background"
+                    className="border border-gray-300 dark:border-gray-600 p-2 rounded bg-white dark:bg-dark-background"
                     placeholder="Your name"
                 />
 
@@ -136,7 +136,7 @@ export default function Settings() {
                     <select
                         value={currency}
                         onChange={(e) => setCurrency(e.target.value)}
-                        className="border w-full appearance-none p-2 rounded bg-white dark:bg-dark-background"
+                        className="border border-gray-300 dark:border-gray-600 w-full appearance-none p-2 rounded bg-white dark:bg-dark-background"
                     >
                         <option value="">Select currency</option>
                         {currencyOptions.map((opt) => (
@@ -190,7 +190,7 @@ export default function Settings() {
                             type="email"
                             value={newEmail}
                             onChange={(e) => setNewEmail(e.target.value)}
-                            className="border p-2 rounded bg-white dark:bg-dark-background"
+                            className="border border-gray-300 dark:border-gray-600 p-2 rounded bg-white dark:bg-dark-background"
                             placeholder="New email"
                         />
 
@@ -199,7 +199,7 @@ export default function Settings() {
                                 type={showCurrentPassword ? "text" : "password"}
                                 value={currentPassword}
                                 onChange={(e) => setCurrentPassword(e.target.value)}
-                                className="w-full border p-2 rounded bg-white dark:bg-dark-background pr-10"
+                                className="w-full border border-gray-300 dark:border-gray-600 p-2 rounded bg-white dark:bg-dark-background pr-10"
                                 placeholder="Current password"
                             />
                             <button
@@ -217,7 +217,7 @@ export default function Settings() {
                                 type={showNewPassword ? "text" : "password"}
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                className="w-full border p-2 rounded bg-white dark:bg-dark-background pr-10"
+                                className="w-full border border-gray-300 dark:border-gray-600 p-2 rounded bg-white dark:bg-dark-background pr-10"
                                 placeholder="New password"
                             />
                             <button

@@ -140,7 +140,7 @@ const Profile = () => {
     return (
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-2 p-10">
             {/* User Info */}
-            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm">
+            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm transition duration-300">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <User className="w-6 h-6 text-blue-400" />
                     User Information
@@ -154,7 +154,7 @@ const Profile = () => {
             </div>
 
             {/* Stats */}
-            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm">
+            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm transition duration-300">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <BarChart2 className="w-6 h-6 text-blue-400" /> Statistics
                 </h2>
@@ -170,7 +170,7 @@ const Profile = () => {
             </div>
 
             {/* Goals */}
-            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm col-span-full">
+            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm col-span-full transition duration-300">
                 <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                     <GoalIcon className="w-6 h-6 text-blue-400" /> Saving Targets
                 </h2>
@@ -189,7 +189,7 @@ const Profile = () => {
                                 </p>
                                 <span className="text-sm text-gray-600">{Math.floor(progress)}%</span>
                             </div>
-                            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+                            <div className="w-full bg-light-secondary-background dark:bg-dark-secondary-background rounded-full h-3 transition duration-300">
                                 <div
                                     className="bg-blue-500 h-3 rounded-full transition-all duration-300"
                                     style={{ width: `${progress}%` }}
@@ -211,7 +211,7 @@ const Profile = () => {
                             placeholder="Target Name"
                             value={newGoal.name}
                             onChange={e => handleChange('name', e.target.value)}
-                            className={`border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} p-2 rounded-lg w-full`}
+                            className={`border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} p-2 rounded-lg w-full text-light-text-primary dark:text-dark-text-primary transition duration-300`}
                         />
                         {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                     </div>
@@ -221,7 +221,7 @@ const Profile = () => {
                             placeholder={`Target (${currency})`}
                             value={newGoal.target}
                             onChange={e => handleChange('target', e.target.value)}
-                            className={`border ${errors.target ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} p-2 rounded-lg w-full`}
+                            className={`border ${errors.target ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} p-2 rounded-lg w-full text-light-text-primary dark:text-dark-text-primary transition duration-300`}
                         />
                         {errors.target && <p className="text-red-500 text-sm mt-1">{errors.target}</p>}
                     </div>
@@ -235,20 +235,20 @@ const Profile = () => {
             </div>
 
             {/* Export / Reset */}
-            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm col-span-full">
+            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm col-span-full transition duration-300">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <Settings className="w-5 h-5" /> Export or Reset Data
                 </h2>
                 <div className="flex flex-wrap gap-4">
                     <button
                         onClick={handleExportCSV}
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2 cursor-pointer"
+                        className="bg-green-600 hover:bg-green-700 text-dark-text-primary px-4 py-2 rounded-lg transition flex items-center gap-2 cursor-pointer"
                     >
                         <FileDown className="w-4 h-4" /> Export CSV
                     </button>
                     <button
                         onClick={() => setConfirmDialogOpen(true)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition flex items-center gap-2 cursor-pointer"
+                        className="bg-red-600 hover:bg-red-700 text-dark-text-primary px-4 py-2 rounded-lg transition flex items-center gap-2 cursor-pointer"
                     >
                         <Trash2 className="w-4 h-4" /> Reset Data
                     </button>

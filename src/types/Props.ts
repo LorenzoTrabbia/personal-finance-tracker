@@ -53,3 +53,7 @@ export type ConfirmDialogProps = {
 export type EmptyStateProps = {
     isSearching?: boolean;
 }; 
+
+export type SidebarContentProps = {
+    closeSidebar?: () => void;
+}

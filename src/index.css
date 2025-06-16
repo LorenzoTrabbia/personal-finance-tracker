@@ -4,24 +4,24 @@
 @theme {
   /* LIGHT THEME */
   --color-light-white: #F1F5F9;
-  --color-light-primary: #1B1F24; /* Sidebar */
-  --color-light-secondary: #16A34A; /* Pulsanti positivi */
-  --color-light-negative-value: #B91C1C; /* Rosso outcome */
-  --color-light-positive-value: #16A34A; /* Verde income */
-  --color-light-background: #FAFAF9; /* Sfondo principale */
-  --color-light-secondary-background: #F1F5F9; /* Alternative bg per card */
+  --color-light-primary: #1B1F24;
+  --color-light-secondary: #16A34A;
+  --color-light-negative-value: #B91C1C;
+  --color-light-positive-value: #16A34A;
+  --color-light-background: #FAFAF9;
+  --color-light-secondary-background: #E5E7EB;
   --color-light-card: #FFFFFF; /* Card */
   --color-light-text-primary: #0F172A;
   --color-light-text-secondary: #64748B;
   --color-light-border: #E5E7EB;
 
   /* DARK THEME */
-  --color-dark-primary: #1B1F24; /* Sidebar */
-  --color-dark-secondary: #22C55E; /* Pulsanti positivi */
+  --color-dark-primary: #1B1F24;
+  --color-dark-secondary: #22C55E;
   --color-dark-negative-value: #F87171;
   --color-dark-positive-value: #4ADE80;
-  --color-dark-background: #11161C; /* Sfondo principale */
-  --color-dark-secondary-background: #1E293B; /* Card */
+  --color-dark-background: #11161C;
+  --color-dark-secondary-background: #364153;
   --color-dark-card: #1B1F24;
   --color-dark-text-primary: #F1F5F9;
   --color-dark-text-secondary: #94A3B8;
@@ -33,100 +33,126 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
 
-/* From Uiverse.io by JustCode14 */ 
-/* Theme Switch */
-/* The switch - the box around the slider */
+/* Switch theme styles */
+:root {
+	--hue: 223;
+	--primary: hsl(var(--hue),90%,50%);
+	--trans-dur: 0.6s;
+	--trans-timing: cubic-bezier(0.65,0,0.35,1);
+}
+body {
+	transition: background-color 5s ease, color 5s ease;
+}
+.switch,
+.switch__input {
+	display: block;
+	-webkit-tap-highlight-color: transparent;
+}
 .switch {
-    font-size: 17px;
-    position: relative;
-    display: inline-block;
-    width: 4em;
-    height: 2.2em;
-    border-radius: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #2a2a2a;
-    transition: 0.4s;
-    border-radius: 30px;
-    overflow: hidden;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 1.2em;
-    width: 1.2em;
-    border-radius: 20px;
-    left: 0.5em;
-    bottom: 0.5em;
-    transition: 0.4s;
-    transition-timing-function: cubic-bezier(0.81, -0.04, 0.38, 1.5);
-    box-shadow: inset 8px -4px 0px 0px #fff;
-  }
-  
-  .switch input:checked + .slider {
-    background-color: #00a6ff;
-  }
-  
-  .switch input:checked + .slider:before {
-    transform: translateX(1.8em);
-    box-shadow: inset 15px -4px 0px 15px #ffcf48;
-  }
-  
-  .star {
-    background-color: #fff;
-    border-radius: 50%;
-    position: absolute;
-    width: 5px;
-    transition: all 0.4s;
-    height: 5px;
-  }
-  
-  .star_1 {
-    left: 2.5em;
-    top: 0.5em;
-  }
-  
-  .star_2 {
-    left: 2.2em;
-    top: 1.2em;
-  }
-  
-  .star_3 {
-    left: 3em;
-    top: 0.9em;
-  }
-  
-  .switch input:checked ~ .slider .star {
-    opacity: 0;
-  }
-  
-  .cloud {
-    width: 3.5em;
-    position: absolute;
-    bottom: -1.4em;
-    left: -1.1em;
-    opacity: 0;
-    transition: all 0.4s;
-  }
-  
-  .switch input:checked ~ .slider .cloud {
-    opacity: 1;
-  }
+	margin-right: auto;
+	position: relative;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+  font-size: 1.5rem;
+}
+.switch__icon {
+	color: hsla(var(--hue),10%,80%);
+	pointer-events: none;
+	position: absolute;
+	top: 0.375em;
+	left: 0.375em;
+	width: 0.75em;
+	height: 0.75em;
+	transition:
+		color var(--trans-dur),
+		transform var(--trans-dur) var(--trans-timing);
+}
+.switch__icon:nth-of-type(2) {
+	right: 0.375em;
+	left: auto;
+}
+.switch__inner,
+.switch__inner-icons {
+	border-radius: 0.5em;
+	display: block;
+	overflow: hidden;
+	position: absolute;
+	top: 0.25em;
+	left: 0.25em;
+	width: 2.25em;
+	height: 1em;
+}
+.switch__inner:before,
+.switch__inner-icons {
+	transition: transform var(--trans-dur) var(--trans-timing);
+	transform: translateX(-1.25em);
+}
+.switch__inner:before {
+	background-color: var(--primary);
+	border-radius: inherit;
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.switch__inner-icons {
+	pointer-events: none;
+}
+.switch__inner-icons .switch__icon {
+	color: hsl(0,0%,100%);
+	top: 0.125em;
+	left: 0.125em;
+	transform: translateX(1.25em);
+}
+.switch__inner-icons .switch__icon:nth-child(2) {
+	right: 0.125em;
+	left: auto;
+}
+.switch__input {
+	background-color: hsl(0,0%,100%);
+	border-radius: 0.75em;
+	box-shadow:
+		0 0 0 0.0625em hsla(var(--hue),90%,50%,0),
+		0 0.125em 0.5em hsla(var(--hue),10%,10%,0.1);
+	outline: transparent;
+	width: 2.75em;
+	height: 1.5em;
+	-webkit-appearance: none;
+	appearance: none;
+	transition:
+		background-color var(--trans-dur),
+		box-shadow var(--trans-dur);
+}
+.switch__input:checked {
+	background-color: hsl(var(--hue),10%,10%);
+}
+.switch__input:checked ~ .switch__icon {
+	color: hsla(var(--hue),10%,40%);
+}
+.switch__input:checked ~ .switch__inner:before,
+.switch__input:checked ~ .switch__inner-icons {
+	transform: translateX(1.25em);
+}
+.switch__input:not(:checked) ~ .switch__icon:first-of-type,
+.switch__input:checked ~ .switch__icon:nth-of-type(2) {
+	transform: rotate(360deg);
+}
+.switch__input:checked ~ .switch__inner-icons .switch__icon:first-of-type {
+	transform: translateX(-1.25em) rotate(-360deg);
+}
+.switch__input:checked ~ .switch__inner-icons .switch__icon:nth-of-type(2) {
+	transform: translateX(-1.25em) rotate(360deg);
+}
+.switch__input:focus-visible {
+	box-shadow:
+		0 0 0 0.0625em hsla(var(--hue),90%,50%,1),
+		0 0.125em 0.5em hsla(var(--hue),10%,10%,0.1);
+}
+.switch__sr {
+	overflow: hidden;
+	position: absolute;
+	width: 1px;
+	height: 1px;
+}
   

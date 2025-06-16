@@ -57,7 +57,7 @@ const AnalyticsPage = () => {
                     {/* Left Column */}
                     <div className="flex flex-col gap-6">
                         {/* Filters */}
-                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow">
+                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow transition duration-300">
                             <div className="flex flex-col md:flex-row md:gap-4">
                                 {/* Category Filter */}
                                 <div className="flex-1 mb-4 md:mb-0">
@@ -66,7 +66,7 @@ const AnalyticsPage = () => {
                                         <select
                                             value={selectedCategory}
                                             onChange={(e) => setSelectedCategory(e.target.value)}
-                                            className="w-full appearance-none rounded-lg border p-2 pr-10 bg-white dark:bg-dark-background text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+                                            className="w-full appearance-none rounded-lg border p-2 pr-10 bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600 transition duration-300"
                                         >
                                             <option value="all">All</option>
                                             {categories.map((cat) => (
@@ -86,7 +86,7 @@ const AnalyticsPage = () => {
                                         <select
                                             value={selectedPeriod}
                                             onChange={(e) => setSelectedPeriod(e.target.value)}
-                                            className="w-full appearance-none rounded-lg border p-2 pr-10 bg-white dark:bg-dark-background text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+                                            className="w-full appearance-none rounded-lg border p-2 pr-10 bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600 transition duration-300"
                                         >
                                             <option value="all">All Time</option>
                                             <option value="lastMonth">Last Month</option>
@@ -103,13 +103,13 @@ const AnalyticsPage = () => {
                         </div>
 
                         {/* Balance Over Time Chart */}
-                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow">
+                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow transition duration-300">
                             <h2 className="text-light-primary dark:text-dark-text-primary text-lg font-semibold mb-4">Balance Over Time</h2>
                             <BalanceOverTimeChart transactions={filteredTransactions} />
                         </div>
 
                         {/* Income vs Expense Chart */}
-                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow">
+                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow transition duration-300">
                             <h2 className="text-light-primary dark:text-dark-text-primary text-lg font-semibold mb-4">Income vs Expense</h2>
                             <IncomeExpenseChart transactions={filteredTransactions} />
                         </div>
@@ -118,13 +118,13 @@ const AnalyticsPage = () => {
                     {/* Right Column */}
                     <div className="flex flex-col gap-6">
                         {/* Expenses by Category Chart */}
-                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow">
+                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow transition duration-300">
                             <h2 className="text-light-primary dark:text-dark-text-primary text-lg font-semibold mb-4">Expenses by Category</h2>
                             <ExpensesByCategoryChart transactions={filteredTransactions} />
                         </div>
 
                         {/* Placeholder for future content */}
-                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow">
+                        <div className="p-4 bg-light-card dark:bg-dark-card rounded-lg shadow transition duration-300">
                             <h2 className="text-light-primary dark:text-dark-text-primary text-lg font-semibold mb-4">Expenses by Category</h2>
                             <ExpensesByCategoryBarChart transactions={filteredTransactions} />
                         </div>
