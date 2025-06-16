@@ -25,10 +25,14 @@ function App() {
   };
 
   const handlers = useSwipeable({
-    onSwipedRight: () => {
+    onSwipedRight: (eventData) => {
+      const target = eventData.event.target as Element;
+      if (target.closest('.prevent-sidebar-swipe')) return;
       if (!isSidebarOpen) toggleSidebar();
     },
-    onSwipedLeft: () => {
+    onSwipedLeft: (eventData) => {
+      const target = eventData.event.target as Element;
+      if (target.closest('.prevent-sidebar-swipe')) return;
       if (isSidebarOpen) toggleSidebar();
     },
     delta: 50,

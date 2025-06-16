@@ -153,7 +153,7 @@ export default function Settings() {
 
                 <div>
                     <label className="block text-sm font-medium mb-2">Choose your avatar:</label>
-                    <div className="flex space-x-4 overflow-x-auto">
+                    <div className="flex space-x-4 overflow-x-auto prevent-sidebar-swipe">
                         {avatars.map((avatar) => (
                             <img
                                 key={avatar}

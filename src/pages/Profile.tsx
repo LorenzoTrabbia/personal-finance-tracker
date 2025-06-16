@@ -138,7 +138,7 @@ const Profile = () => {
 
 
     return (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-2 p-10">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-2 py-10 px-8 mx-auto">
             {/* User Info */}
             <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm transition duration-300">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
