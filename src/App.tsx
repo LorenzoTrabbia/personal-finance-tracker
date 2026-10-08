@@ -10,7 +10,7 @@ import { useMediaQuery } from "./hooks/useMediaQuery";
 import Sidebar from "./components/Sidebar";
 
 // Icons
-import { Menu } from "lucide-react";
+import { Menu, Sparkles } from "lucide-react";
 import SidebarContent from "./components/SidebarContent";
 
 function App() {
@@ -45,10 +45,19 @@ function App() {
       {!hideSidebar && !isMobile && <Sidebar />}
 
       {!hideSidebar && isMobile && (
-        <div className="fixed left-0 top-0 z-50 flex h-14 w-full items-center border-b border-slate-800 bg-dark-primary px-5 shadow-sm">
-          <button onClick={toggleSidebar} aria-label="Open navigation menu" className="rounded-lg p-2 text-white hover:bg-white/10">
+        <div className="fixed left-0 top-0 z-50 flex h-14 w-full items-center border-b border-white/10 bg-dark-primary px-4 shadow-lg shadow-slate-950/10">
+          <button onClick={toggleSidebar} aria-label="Open navigation menu" className="rounded-xl p-2 text-white transition hover:bg-white/10">
             <Menu className="h-5 w-5" />
           </button>
+          <div className="ml-3 flex min-w-0 items-center gap-2.5">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-400 text-dark-primary">
+              <Sparkles className="h-4 w-4" />
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold tracking-tight text-white">Personal Finance</p>
+              <p className="truncate text-[9px] font-semibold uppercase tracking-[0.16em] text-emerald-300">Your money, clarified</p>
+            </div>
+          </div>
         </div>
       )}
 
@@ -83,7 +92,7 @@ function App() {
         )}
       </AnimatePresence>
 
-      <main className="relative flex-1 overflow-x-hidden overflow-y-auto pt-14 md:pt-0">
+      <main className={`relative flex-1 overflow-x-hidden overflow-y-auto ${!hideSidebar ? "pt-14 md:pt-0" : ""}`}>
         <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo({ top: 0, left: 0, behavior: "smooth" })}>
           <motion.div
             key={location.pathname}
@@ -93,7 +102,6 @@ function App() {
             transition={{ duration: 0.3 }}
             className={[
               "relative min-h-full",
-              isMobile ? "pt-14" : "",
             ].join(" ")}
           >
             {outlet}
