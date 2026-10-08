@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Types
@@ -9,38 +10,56 @@ export default function ConfirmDialog({
     description,
     onConfirm,
     onCancel,
+    confirmDisabled = false,
 }: ConfirmDialogProps) {
+    const cancelRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        if (!open) return;
+        cancelRef.current?.focus();
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") onCancel();
+        };
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [open, onCancel]);
+
     return (
         <AnimatePresence>
             {open && (
                 <motion.div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="confirm-dialog-title"
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                 >
                     <motion.div
-                        className="bg-light-white dark:bg-dark-background rounded-xl p-6 shadow-lg w-80"
+                        className="w-full max-w-sm rounded-3xl border border-light-border bg-light-card p-6 shadow-2xl dark:border-dark-border dark:bg-dark-card"
                         initial={{ scale: 0.9 }}
                         animate={{ scale: 1 }}
                         exit={{ scale: 0.9 }}
                     >
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
+                        <h2 id="confirm-dialog-title" className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
                         {description && (
                             <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">{description}</p>
                         )}
-                        <div className="mt-4 flex justify-end gap-2">
+                        <div className="mt-6 flex justify-end gap-3">
                             <button
+                                ref={cancelRef}
                                 onClick={onCancel}
-                                className="px-4 py-2 text-sm rounded-md bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                                className="h-11 rounded-xl border border-light-border bg-light-card px-4 text-sm font-medium text-gray-700 transition hover:bg-light-background dark:border-dark-border dark:bg-dark-card dark:text-gray-200 dark:hover:bg-dark-background"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={onConfirm}
-                                className="px-4 py-2 text-sm rounded-md bg-red-600 text-light-white hover:bg-red-700"
+                                disabled={confirmDisabled}
+                                className="h-11 rounded-xl bg-red-600 px-4 text-sm font-semibold text-white transition hover:bg-red-700"
                             >
-                                Delete
+                                {confirmDisabled ? "Deleting..." : "Delete"}
                             </button>
                         </div>
                     </motion.div>

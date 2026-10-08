@@ -33,5 +33,11 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5"
+  },
+  "allowScripts": {
+    "@tailwindcss/oxide@4.1.8": true,
+    "@firebase/util@1.12.1": true,
+    "protobufjs@7.6.6": true,
+    "esbuild@0.25.12": true
   }
 }

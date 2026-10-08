@@ -23,18 +23,18 @@ export default function FilterBar({
     };
 
     return (
-        <div className="flex flex-col sm:flex-row sm:items-end gap-4 w-full flex-wrap">
+        <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
 
             {/* Categories filter */}
-            <div className="relative w-full sm:w-48">
+            <div className="relative w-full">
                 <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     disabled={disabled}
-                    className={`appearance-none w-full px-2 py-1 sm:px-4 sm:py-2 pr-8 sm:pr-10 rounded-md border shadow-2xs focus:outline-none className="w-full p-2 transition duration-300"
+                    className={`select-modern h-12 w-full px-4 pr-10 text-sm
                         ${disabled
-                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                            : 'bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                            ? 'cursor-not-allowed border-gray-200 text-gray-400'
+                            : 'text-light-text-primary dark:text-dark-text-primary'
                         }`}
                 >
                     <option value="" disabled hidden>
@@ -54,15 +54,15 @@ export default function FilterBar({
             </div>
 
             {/* Months filter */}
-            <div className="relative w-full sm:w-48">
+            <div className="relative w-full">
                 <select
                     value={selectedMonth}
                     onChange={(e) => setSelectedMonth(e.target.value)}
                     disabled={disabled}
-                    className={`appearance-none w-full px-2 py-1 sm:px-4 sm:py-2 pr-8 sm:pr-10 rounded-md border shadow-2xs focus:outline-none transition
+                    className={`select-modern h-12 w-full px-4 pr-10 text-sm
                         ${disabled
-                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                            : 'bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                            ? 'cursor-not-allowed border-gray-200 text-gray-400'
+                            : 'text-light-text-primary dark:text-dark-text-primary'
                         }`}
                 >
                     <option value="" disabled hidden>
@@ -83,15 +83,15 @@ export default function FilterBar({
 
 
             {/* Years filter */}
-            <div className="relative w-full sm:w-48">
+            <div className="relative w-full">
                 <select
                     value={selectedYear}
                     onChange={(e) => setSelectedYear(e.target.value)}
                     disabled={disabled}
-                    className={`appearance-none w-full px-2 py-1 sm:px-4 sm:py-2 pr-8 sm:pr-10 rounded-md border shadow-2xs focus:outline-none transition
+                    className={`select-modern h-12 w-full px-4 pr-10 text-sm
                         ${disabled
-                            ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                            : 'bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-dark-secondary-background focus:border-transparent'
+                            ? 'cursor-not-allowed border-gray-200 text-gray-400'
+                            : 'text-light-text-primary dark:text-dark-text-primary'
                         }`}
                 >
                     <option value="" disabled hidden>
@@ -115,7 +115,7 @@ export default function FilterBar({
                 <button
                     onClick={resetFilters}
                     disabled={disabled}
-                    className={`mt-2 text-sm transition ${disabled
+                    className={`col-span-full justify-self-start text-sm font-medium transition ${disabled
                         ? 'text-gray-400 cursor-not-allowed'
                         : 'text-red-500 cursor-pointer hover:underline hover:opacity-90'
                         }`}

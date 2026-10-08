@@ -8,11 +8,11 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import type { SidebarContentProps } from "../types/Props";
 
 // Icons
-import { LayoutDashboard, ChartNoAxesColumn, User, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, ChartNoAxesColumn, User, Settings, LogOut, Sparkles, Moon, Sun } from "lucide-react";
 
 const SidebarContent = ({ closeSidebar }: SidebarContentProps) => {
     const navigate = useNavigate();
-    const { isDarkMode, toggleTheme, avatar } = useAppContext();
+    const { isDarkMode, toggleTheme, avatar, userName } = useAppContext();
     const isMobile = useMediaQuery("(max-width: 768px)");
 
     const handleLogout = async () => {
@@ -25,29 +25,33 @@ const SidebarContent = ({ closeSidebar }: SidebarContentProps) => {
     };
 
     return (
-        <nav className="flex flex-col h-full mt-4">
+        <nav className="mt-0 flex h-full flex-col">
             {/* User profile */}
-            <div className="flex items-center mb-8 gap-4 px-4">
+            <div className="mb-12 flex items-center gap-3 px-2">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-400 text-dark-primary shadow-lg shadow-emerald-950/20"><Sparkles className="h-5 w-5" /></div>
+                <div>
+                    <p className="select-none text-sm font-semibold tracking-tight text-white">Personal Finance</p>
+                    <p className="select-none text-[10px] font-semibold uppercase tracking-[0.2em] text-emerald-300">Your money, clarified</p>
+                </div>
+            </div>
+            <div className="mb-10 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3">
                 {avatar && (
                     <div
-                        className="relative group w-14 h-14 rounded-full overflow-hidden cursor-pointer shadow-lg transition-transform duration-300 hover:scale-110"
+                        className="group relative h-10 w-10 shrink-0 cursor-pointer overflow-hidden rounded-xl shadow-lg transition-transform duration-300 hover:scale-105"
                         onClick={() => { navigate("/profile"); if (isMobile && closeSidebar) closeSidebar(); }}
                     >
                         <img src={`/avatars/${avatar}`} alt="User Avatar" className="w-full h-full" />
                     </div>
                 )}
                 <div>
-                    <h1 className="text-white font-extrabold text-md tracking-widest select-none leading-tight">
-                        PERSONAL FINANCE
-                    </h1>
-                    <p className="text-indigo-200 text-xs font-semibold tracking-wider select-none">
-                        TRACKER
-                    </p>
+                    <p className="truncate text-sm font-semibold text-white">{userName || "Your account"}</p>
+                    <p className="text-xs text-slate-400">Personal workspace</p>
                 </div>
             </div>
 
             {/* Menu Items */}
-            <div className="flex flex-col space-y-4 flex-grow px-4">
+            <div className="flex flex-grow flex-col space-y-2 px-1">
+                <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Workspace</p>
                 {[
                     { to: "/", label: "Dashboard", icon: LayoutDashboard },
                     { to: "/analytics", label: "Analytics", icon: ChartNoAxesColumn },
@@ -63,17 +67,17 @@ const SidebarContent = ({ closeSidebar }: SidebarContentProps) => {
                             }}
                         className={({ isActive }) =>
                             [
-                                "rounded-lg py-2 transition-colors duration-200",
+                                "flex items-center rounded-2xl px-4 py-3 text-sm transition-colors duration-200",
                                 isActive
-                                    ? "font-bold text-light-white bg-slate-600"
-                                    : "text-light-white hover:opacity-100 opacity-80",
+                                    ? "font-semibold text-white bg-emerald-400/15 shadow-inner shadow-emerald-400/5"
+                                    : "text-slate-300 hover:bg-white/5 hover:text-white",
                             ].join(" ")
                         }
                     >
                         {({ isActive }) => (
                             <>
                                 <Icon
-                                    className={`inline mx-4 mr-6 ${isActive ? "text-blue-400" : "text-gray-400"}`}
+                                    className={`mr-3 h-4 w-4 ${isActive ? "text-emerald-300" : "text-slate-400"}`}
                                 />
                                 {label}
                             </>
@@ -83,54 +87,33 @@ const SidebarContent = ({ closeSidebar }: SidebarContentProps) => {
             </div>
 
             {/* Logout & Dark Mode Toggle */}
-            <div className="flex flex-col gap-4 mt-4 px-4">
+            <div className="mt-8 flex flex-col gap-3 border-t border-white/10 px-1 pt-5">
                 {/* Logout */}
                 <button
                     onClick={handleLogout}
-                    className="flex items-center rounded-lg py-2 transition-colors duration-200 text-light-white hover:opacity-100 opacity-80"
+                    className="flex items-center rounded-2xl px-3 py-3 text-sm text-slate-300 transition-colors duration-200 hover:bg-white/5 hover:text-white"
                 >
-                    <LogOut className="inline mx-4 mr-6" color="red" />
+                    <LogOut className="mr-3 h-4 w-4 text-red-300" />
                     Logout
                 </button>
 
                 {/* Dark Mode Toggle */}
-                <svg className="hidden">
-                    <symbol id="light" viewBox="0 0 24 24">
-                        <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                            <line x1="12" y1="17" x2="12" y2="20" transform="rotate(0,12,12)" />
-                            <line x1="12" y1="17" x2="12" y2="20" transform="rotate(45,12,12)" />
-                            <line x1="12" y1="17" x2="12" y2="20" transform="rotate(90,12,12)" />
-                            <line x1="12" y1="17" x2="12" y2="20" transform="rotate(135,12,12)" />
-                            <line x1="12" y1="17" x2="12" y2="20" transform="rotate(180,12,12)" />
-                            <line x1="12" y1="17" x2="12" y2="20" transform="rotate(225,12,12)" />
-                            <line x1="12" y1="17" x2="12" y2="20" transform="rotate(270,12,12)" />
-                            <line x1="12" y1="17" x2="12" y2="20" transform="rotate(315,12,12)" />
-                        </g>
-                        <circle fill="currentColor" cx="12" cy="12" r="5" />
-                    </symbol>
-                    <symbol id="dark" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M15.1,14.9c-3-0.5-5.5-3-6-6C8.8,7.1,9.1,5.4,9.9,4c0.4-0.8-0.4-1.7-1.2-1.4C4.6,4,1.8,7.9,2,12.5c0.2,5.1,4.4,9.3,9.5,9.5c4.5,0.2,8.5-2.6,9.9-6.6c0.3-0.8-0.6-1.7-1.4-1.2C18.6,14.9,16.9,15.2,15.1,14.9z" />
-                    </symbol>
-                </svg>
-                <label className="switch mx-4 font-semibold">
-                    <input className="switch__input" type="checkbox" role="switch" name="dark" checked={isDarkMode} onChange={toggleTheme} />
-                    <svg className="switch__icon" width="24px" height="24px" aria-hidden="true">
-                        <use href="#light" />
-                    </svg>
-                    <svg className="switch__icon" width="24px" height="24px" aria-hidden="true">
-                        <use href="#dark" />
-                    </svg>
-                    <span className="switch__inner"></span>
-                    <span className="switch__inner-icons">
-                        <svg className="switch__icon" width="24px" height="24px" aria-hidden="true">
-                            <use href="#light" />
-                        </svg>
-                        <svg className="switch__icon" width="24px" height="24px" aria-hidden="true">
-                            <use href="#dark" />
-                        </svg>
+                <button
+                    type="button"
+                    role="switch"
+                    aria-checked={isDarkMode}
+                    aria-label={`Switch to ${isDarkMode ? "light" : "dark"} mode`}
+                    onClick={toggleTheme}
+                    className="group flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-slate-300 transition hover:border-emerald-400/30 hover:bg-white/10 hover:text-white"
+                >
+                    <span className="flex items-center gap-3">
+                        {isDarkMode ? <Moon className="h-4 w-4 text-emerald-300" /> : <Sun className="h-4 w-4 text-emerald-300" />}
+                        <span>{isDarkMode ? "Dark mode" : "Light mode"}</span>
                     </span>
-                    <span className="switch__sr">Dark Mode</span>
-                </label>
+                    <span className={`relative h-6 w-11 rounded-full p-1 transition-colors ${isDarkMode ? "bg-emerald-400" : "bg-slate-600"}`}>
+                        <span className={`block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${isDarkMode ? "translate-x-5" : "translate-x-0"}`} />
+                    </span>
+                </button>
             </div>
         </nav>
     );

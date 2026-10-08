@@ -1,26 +1,25 @@
 // utils/getExchangeRate.ts
 
-const EXCHANGE_RATE_API_KEY = 'b7713be7adc4f70be3c433bc';
+const EXCHANGE_RATE_API_KEY = import.meta.env.VITE_EXCHANGE_RATE_API_KEY;
 const BASE_URL = 'https://v6.exchangerate-api.com/v6';
 
 export const getExchangeRate = async (
   fromCurrency: string,
   toCurrency: string
 ): Promise<number> => {
-  try {
-    const res = await fetch(
-      `${BASE_URL}/${EXCHANGE_RATE_API_KEY}/pair/${fromCurrency}/${toCurrency}`
-    );
+  if (!EXCHANGE_RATE_API_KEY) {
+    throw new Error('Exchange rate service is not configured.');
+  }
 
-    const data = await res.json();
+  const res = await fetch(
+    `${BASE_URL}/${EXCHANGE_RATE_API_KEY}/pair/${fromCurrency}/${toCurrency}`
+  );
 
-    if (data.result === 'success') {
-      return data.conversion_rate;
-    } else {
-      throw new Error(`API Error: ${data['error-type']}`);
-    }
-  } catch (error) {
-    console.error('Error to retrieve conversion', error);
-    throw error;
+  const data = await res.json();
+
+  if (data.result === 'success') {
+    return data.conversion_rate;
+  } else {
+    throw new Error(`API Error: ${data['error-type']}`);
   }
 };

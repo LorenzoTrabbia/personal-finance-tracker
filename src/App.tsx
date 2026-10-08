@@ -45,9 +45,9 @@ function App() {
       {!hideSidebar && !isMobile && <Sidebar />}
 
       {!hideSidebar && isMobile && (
-        <div className="fixed top-0 left-0 w-full h-14 bg-light-primary dark:bg-dark-primary shadow-md flex items-center px-4 z-50">
-          <button onClick={toggleSidebar}>
-            <Menu className="text-white w-6 h-6" />
+        <div className="fixed left-0 top-0 z-50 flex h-14 w-full items-center border-b border-slate-800 bg-dark-primary px-5 shadow-sm">
+          <button onClick={toggleSidebar} aria-label="Open navigation menu" className="rounded-lg p-2 text-white hover:bg-white/10">
+            <Menu className="h-5 w-5" />
           </button>
         </div>
       )}
@@ -83,7 +83,7 @@ function App() {
         )}
       </AnimatePresence>
 
-      <main className="flex-1 p-6 overflow-y-auto overflow-x-hidden relative pt-14 md:pt-0">
+      <main className="relative flex-1 overflow-x-hidden overflow-y-auto pt-14 md:pt-0">
         <AnimatePresence mode="wait" initial={false} onExitComplete={() => window.scrollTo({ top: 0, left: 0, behavior: "smooth" })}>
           <motion.div
             key={location.pathname}
@@ -92,7 +92,7 @@ function App() {
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.3 }}
             className={[
-              "absolute inset-0",
+              "relative min-h-full",
               isMobile ? "pt-14" : "",
             ].join(" ")}
           >

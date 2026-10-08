@@ -3,11 +3,18 @@ import { ArrowDownUp } from 'lucide-react';
 
 // Types
 import type { SortByProps } from "../types/Props"
+import type { SortOption } from "../types/Props"
+
+const sortOptions: SortOption[] = ["date_desc", "date_asc", "amount_desc", "amount_asc"];
+
+function isSortOption(value: string): value is SortOption {
+    return sortOptions.includes(value as SortOption);
+}
 
 export default function SortBy({ sortBy, setSortBy, disabled = false }: SortByProps) {
     return (
         <div
-            className={`relative w-fit mb-2 rounded-md ${disabled
+            className={`relative mb-2 w-fit rounded-xl ${disabled
                 ? 'text-gray-400 cursor-not-allowed'
                 : ''
                 }`}
@@ -18,19 +25,20 @@ export default function SortBy({ sortBy, setSortBy, disabled = false }: SortByPr
             </div>
             <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => {
+                    if (isSortOption(e.target.value)) setSortBy(e.target.value);
+                }}
                 disabled={disabled}
-                className={`appearance-none w-full pl-10 rounded-md border border-transparent text-gray-500 dark:text-gray-400
-                            focus:outline-none focus:border-transparent
+                className={`select-modern h-11 w-full pl-10 pr-4 text-sm text-gray-500 dark:text-gray-400
                             ${disabled
                         ? 'cursor-not-allowed'
-                        : 'dark:bg-dark-primary-background cursor-pointer'}
+                        : 'cursor-pointer'}
                 `}
             >
-                <option value="date_desc" className='dark:text-light-text-primary'>Date (Newest)</option>
-                <option value="date_asc" className='dark:text-light-text-primary'>Date (Oldest)</option>
-                <option value="amount_desc" className='dark:text-light-text-primary'>Amount (High to Low)</option>
-                <option value="amount_asc" className='dark:text-light-text-primary'>Amount (Low to High)</option>
+                <option value="date_desc">Date (Newest)</option>
+                <option value="date_asc">Date (Oldest)</option>
+                <option value="amount_desc">Amount (High to Low)</option>
+                <option value="amount_asc">Amount (Low to High)</option>
             </select>
         </div>
     )

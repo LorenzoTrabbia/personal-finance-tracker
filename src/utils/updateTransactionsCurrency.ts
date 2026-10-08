@@ -7,10 +7,7 @@ export const updateTransactionsCurrency = async (
   fromCurrency: string,
   toCurrency: string
 ) => {
-  try {
     const rate = await getExchangeRate(fromCurrency, toCurrency);
-    console.log(`Tasso di cambio ${fromCurrency} ➝ ${toCurrency}: ${rate}`);
-
     const transactionsRef = collection(db, "users", userId, "transactions");
     const snapshot = await getDocs(transactionsRef);
 
@@ -26,10 +23,4 @@ export const updateTransactionsCurrency = async (
     });
 
     await Promise.all(updates);
-
-    console.log("Aggiornamento completato");
-  } catch (error) {
-    console.error("Errore durante l'aggiornamento delle transazioni:", error);
-    throw error;
-  }
 };

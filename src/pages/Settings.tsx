@@ -109,8 +109,7 @@ export default function Settings() {
             setAuthMessage("Email and/or password successfully updated!");
             setCurrentPassword("");
             setNewPassword("");
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
             setAuthError("Error: incorrect password or operation not permitted.");
         }
@@ -119,40 +118,49 @@ export default function Settings() {
     const isPasswordUser = user?.providerData[0]?.providerId === "password";
 
     return (
-        <div className="max-w-lg mx-auto p-10 bg-light-background dark:bg-dark-background rounded shadow text-light-text-primary dark:text-dark-text-primary">
-            <h2 className="text-2xl font-bold mb-4">Profile Settings</h2>
+        <div className="mx-auto max-w-5xl px-5 py-8 text-light-text-primary dark:text-dark-text-primary sm:px-8 lg:px-10 lg:py-10">
+            <div className="relative mb-8 overflow-hidden rounded-3xl bg-dark-primary px-6 py-7 text-white shadow-xl shadow-slate-900/10 sm:px-8">
+                <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-emerald-400/15 blur-3xl" />
+                <div className="relative"><p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Preferences</p><h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Settings</h2><p className="mt-3 max-w-lg text-sm leading-6 text-slate-300">Personalize your workspace and keep your account details up to date.</p></div>
+            </div>
+            <div className="rounded-3xl border border-light-border bg-light-card p-6 shadow-sm dark:border-dark-border dark:bg-dark-card sm:p-8">
 
             {/* Form for displayName and currency */}
-            <form onSubmit={handleSave} className="flex flex-col space-y-4">
+            <form onSubmit={handleSave} className="flex flex-col space-y-5">
+                <div className="border-b border-light-border pb-5 dark:border-dark-border"><h3 className="text-lg font-semibold">Workspace preferences</h3><p className="mt-1 text-sm text-light-text-secondary dark:text-dark-text-secondary">Choose how your account looks and displays amounts.</p></div>
+                <label className="text-sm font-medium">Display name
                 <input
                     type="text"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
-                    className="border border-gray-300 dark:border-gray-600 p-2 rounded bg-white dark:bg-dark-background"
+                    className="mt-2 h-12 w-full rounded-xl border border-light-border bg-light-background px-4 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10 dark:border-dark-border dark:bg-dark-background"
                     placeholder="Your name"
                 />
+                </label>
 
-                <div className="relative">
-                    <select
-                        value={currency}
-                        onChange={(e) => setCurrency(e.target.value)}
-                        className="border border-gray-300 dark:border-gray-600 w-full appearance-none p-2 rounded bg-white dark:bg-dark-background"
-                    >
-                        <option value="">Select currency</option>
-                        {currencyOptions.map((opt) => (
-                            <option key={opt.value} value={opt.value}>
-                                {opt.label}
-                            </option>
-                        ))}
-                    </select>
+                <label className="text-sm font-medium">Currency
+                    <div className="relative">
+                        <select
+                            value={currency}
+                            onChange={(e) => setCurrency(e.target.value)}
+                            className="select-modern mt-2 h-12 w-full px-4 pr-10 text-sm"
+                        >
+                            <option value="">Select currency</option>
+                            {currencyOptions.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                </option>
+                            ))}
+                        </select>
 
-                    <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
-                        <ChevronDown className="w-5 h-5" />
+                        <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
+                            <ChevronDown className="h-5 w-5" />
+                        </div>
                     </div>
-                </div>
+                </label>
 
                 <div>
-                    <label className="block text-sm font-medium mb-2">Choose your avatar:</label>
+                    <label className="mb-2 block text-sm font-medium">Choose your avatar</label>
                     <div className="flex space-x-4 overflow-x-auto prevent-sidebar-swipe">
                         {avatars.map((avatar) => (
                             <img
@@ -160,9 +168,9 @@ export default function Settings() {
                                 src={`/avatars/${avatar}`}
                                 alt={avatar}
                                 onClick={() => setSelectedAvatar(avatar)}
-                                className={`w-16 h-16 rounded-full cursor-pointer border-2 transition ${selectedAvatar === avatar
-                                    ? "border-blue-500"
-                                    : "border-transparent hover:border-gray-400"
+                                className={`h-16 w-16 cursor-pointer rounded-2xl border-2 transition ${selectedAvatar === avatar
+                                    ? "border-emerald-500 ring-4 ring-emerald-500/15"
+                                    : "border-transparent hover:border-slate-300"
                                     }`}
                             />
                         ))}
@@ -170,12 +178,12 @@ export default function Settings() {
                 </div>
 
 
-                <button type="submit" className="bg-light-primary dark:bg-dark-primary text-white py-2 rounded hover:opacity-90 transition">
+                <button type="submit" className="h-11 rounded-xl bg-light-primary px-5 font-semibold text-white transition hover:opacity-90 dark:bg-emerald-500 dark:text-dark-primary">
                     Save
                 </button>
 
                 {message && (
-                    <p className="text-sm text-center mt-2 text-light-text-secondary dark:text-dark-text-secondary">
+                    <p role="status" className="rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">
                         {message}
                     </p>
                 )}
@@ -184,13 +192,15 @@ export default function Settings() {
             {/* Form to change email/password */}
             {isPasswordUser && (
                 <>
-                    <h3 className="text-xl font-semibold mt-8">Account credentials</h3>
-                    <form onSubmit={handleCredentialsUpdate} className="flex flex-col space-y-4 mt-4">
+                    <div className="mt-10 border-t border-light-border pt-8 dark:border-dark-border"><h3 className="text-lg font-semibold">Account credentials</h3>
+                    <p className="mt-1 text-sm text-light-text-secondary dark:text-dark-text-secondary">Update your email or password securely.</p>
+                    </div>
+                    <form onSubmit={handleCredentialsUpdate} className="mt-5 flex flex-col space-y-4">
                         <input
                             type="email"
                             value={newEmail}
                             onChange={(e) => setNewEmail(e.target.value)}
-                            className="border border-gray-300 dark:border-gray-600 p-2 rounded bg-white dark:bg-dark-background"
+                            className="h-12 rounded-xl border border-light-border bg-light-background px-4 text-sm dark:border-dark-border dark:bg-dark-background"
                             placeholder="New email"
                         />
 
@@ -199,7 +209,7 @@ export default function Settings() {
                                 type={showCurrentPassword ? "text" : "password"}
                                 value={currentPassword}
                                 onChange={(e) => setCurrentPassword(e.target.value)}
-                                className="w-full border border-gray-300 dark:border-gray-600 p-2 rounded bg-white dark:bg-dark-background pr-10"
+                                className="h-12 w-full rounded-xl border border-light-border bg-light-background px-4 pr-10 text-sm dark:border-dark-border dark:bg-dark-background"
                                 placeholder="Current password"
                             />
                             <button
@@ -217,7 +227,7 @@ export default function Settings() {
                                 type={showNewPassword ? "text" : "password"}
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
-                                className="w-full border border-gray-300 dark:border-gray-600 p-2 rounded bg-white dark:bg-dark-background pr-10"
+                                className="h-12 w-full rounded-xl border border-light-border bg-light-background px-4 pr-10 text-sm dark:border-dark-border dark:bg-dark-background"
                                 placeholder="New password"
                             />
                             <button
@@ -231,17 +241,17 @@ export default function Settings() {
                         </div>
 
 
-                        <button type="submit" className="bg-light-primary dark:bg-dark-primary text-white py-2 rounded hover:opacity-90 transition">
+                        <button type="submit" className="h-12 rounded-xl bg-light-primary py-2 font-semibold text-white transition hover:bg-slate-800 dark:bg-emerald-500 dark:text-dark-primary dark:hover:bg-emerald-400">
                             Update Credentials
                         </button>
 
                         {authMessage && (
-                            <p className="text-sm text-center mt-2 text-green-600 dark:text-green-400">
+                            <p role="status" className="rounded-xl bg-emerald-50 px-4 py-3 text-center text-sm text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-300">
                                 {authMessage}
                             </p>
                         )}
                         {authError && (
-                            <p className="text-sm text-center mt-2 text-red-600 dark:text-red-400">
+                            <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:bg-red-950/30 dark:text-red-300">
                                 {authError}
                             </p>
                         )}
@@ -249,6 +259,7 @@ export default function Settings() {
                     </form>
                 </>
             )}
+            </div>
         </div>
     );
 }

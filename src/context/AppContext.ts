@@ -12,6 +12,7 @@ type AppContextType = {
     transactions: Transaction[];
     fetchTransactions: () => Promise<void>;
     loadingTransactions: boolean;
+    transactionError: string | null;
 };
 
 const defaultContext: AppContextType = {
@@ -24,8 +25,8 @@ const defaultContext: AppContextType = {
     toggleTheme: () => {},
     transactions: [],
     fetchTransactions: async () => {},
-    loadingTransactions: true
+    loadingTransactions: true,
+    transactionError: null
 };
 
 export const AppContext = createContext<AppContextType>(defaultContext);
-

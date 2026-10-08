@@ -4,25 +4,25 @@
 @theme {
   /* LIGHT THEME */
   --color-light-white: #F1F5F9;
-  --color-light-primary: #1B1F24;
-  --color-light-secondary: #16A34A;
+  --color-light-primary: #102a43;
+  --color-light-secondary: #0f9f6e;
   --color-light-negative-value: #B91C1C;
   --color-light-positive-value: #16A34A;
-  --color-light-background: #FAFAF9;
-  --color-light-secondary-background: #E5E7EB;
-  --color-light-card: #FFFFFF; /* Card */
+  --color-light-background: #f4f7f8;
+  --color-light-secondary-background: #e8eef0;
+  --color-light-card: #ffffff;
   --color-light-text-primary: #0F172A;
   --color-light-text-secondary: #64748B;
   --color-light-border: #E5E7EB;
 
   /* DARK THEME */
-  --color-dark-primary: #1B1F24;
-  --color-dark-secondary: #22C55E;
+  --color-dark-primary: #111b2b;
+  --color-dark-secondary: #34d399;
   --color-dark-negative-value: #F87171;
   --color-dark-positive-value: #4ADE80;
-  --color-dark-background: #11161C;
-  --color-dark-secondary-background: #364153;
-  --color-dark-card: #1B1F24;
+  --color-dark-background: #0d1521;
+  --color-dark-secondary-background: #243247;
+  --color-dark-card: #152235;
   --color-dark-text-primary: #F1F5F9;
   --color-dark-text-secondary: #94A3B8;
   --color-dark-border: #334155;
@@ -41,7 +41,95 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 	--trans-timing: cubic-bezier(0.65,0,0.35,1);
 }
 body {
-	transition: background-color 5s ease, color 5s ease;
+	margin: 0;
+	min-width: 320px;
+	background:
+		radial-gradient(circle at 85% -10%, rgb(16 42 67 / 0.08), transparent 34rem),
+		#f4f7f8;
+	color: #102a43;
+	font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	transition: background-color 200ms ease, color 200ms ease;
+}
+
+button, input, select {
+	font: inherit;
+}
+
+.select-modern {
+	appearance: none;
+	color-scheme: light;
+	border: 1px solid #e2e8f0;
+	border-radius: 1rem;
+	background-color: #ffffff;
+	color: #0f172a;
+	box-shadow: 0 1px 2px rgb(15 23 42 / 0.04), inset 0 1px 0 rgb(255 255 255 / 0.7);
+	transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.select-modern option {
+	background: #ffffff;
+	color: #0f172a;
+}
+
+.select-modern:hover:not(:disabled) {
+	border-color: #cbd5e1;
+	background-color: #f8fafc;
+}
+
+.select-modern:focus {
+	border-color: #10b981;
+	box-shadow: 0 0 0 4px rgb(16 185 129 / 0.1);
+	outline: none;
+}
+
+.dark .select-modern {
+	color-scheme: dark;
+	border-color: #334155;
+	background-color: #152235;
+	color: #f1f5f9;
+	box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+}
+
+.dark .select-modern option {
+	background: #152235;
+	color: #f1f5f9;
+}
+
+.dark .select-modern option:checked,
+.select-modern option:checked {
+	background: #34d399;
+	color: #102a43;
+}
+
+.dark .select-modern:hover:not(:disabled) {
+	border-color: #475569;
+	background-color: #1b2a3d;
+}
+
+.select-modern:disabled {
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+	outline: 3px solid rgb(52 211 153 / 0.45);
+	outline-offset: 2px;
+}
+
+.dark body {
+	background:
+		radial-gradient(circle at 85% -10%, rgb(52 211 153 / 0.07), transparent 34rem),
+		#0d1521;
+	color: #e7eef5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*, *::before, *::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		scroll-behavior: auto !important;
+		transition-duration: 0.01ms !important;
+	}
 }
 .switch,
 .switch__input {

@@ -31,10 +31,12 @@ export type AddTransactionButtonProps = {
 };
 
 export type SortByProps = {
-    sortBy: string;
-    setSortBy: (val: string) => void;
+    sortBy: SortOption;
+    setSortBy: (val: SortOption) => void;
     disabled?: boolean;
 }
+
+export type SortOption = "date_desc" | "date_asc" | "amount_desc" | "amount_asc";
   
 export type AddTransactionModalProps = {
     onClose: () => void;
@@ -48,6 +50,7 @@ export type ConfirmDialogProps = {
     description?: string;
     onConfirm: () => void;
     onCancel: () => void;
+    confirmDisabled?: boolean;
 }
 
 export type EmptyStateProps = {

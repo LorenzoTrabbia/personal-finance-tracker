@@ -14,12 +14,14 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [loadingTransactions, setLoadingTransactions] = useState<boolean>(false);
+    const [transactionError, setTransactionError] = useState<string | null>(null);
 
     const fetchTransactions = async () => {
         const user = auth.currentUser;
         if (!user?.uid) return;
 
         setLoadingTransactions(true);
+        setTransactionError(null);
         try {
             const q = query(
                 collection(db, "users", user.uid, "transactions"),
@@ -30,6 +32,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             setTransactions(data);
         } catch (error) {
             console.error("Errore nel recupero transazioni:", error);
+            setTransactionError("We couldn't load your transactions. Check your connection and try again.");
         } finally {
             setLoadingTransactions(false);
         }
@@ -83,6 +86,9 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             if (user) {
                 fetchPreferences();
                 fetchTransactions();
+            } else {
+                setTransactions([]);
+                setTransactionError(null);
             }
         });
         return () => unsubscribe();
@@ -99,7 +105,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             toggleTheme,
             transactions,
             fetchTransactions,
-            loadingTransactions
+            loadingTransactions,
+            transactionError
         }}>
             {children}
         </AppContext.Provider>

@@ -34,17 +34,17 @@ export default function TransactionItem({ transaction, onEdit, onDelete, currenc
     }, [menuOpen]);
 
     return (
-        <li className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 bg-white dark:bg-dark-card rounded-xl px-4 py-3 shadow-sm transition duration-300">
+        <li className={`group relative flex flex-col gap-3 rounded-2xl border border-light-border/70 bg-light-card px-4 py-4 transition duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-md dark:border-dark-border/70 dark:bg-dark-background/60 dark:hover:border-emerald-900 sm:flex-row sm:items-center sm:justify-between ${menuOpen ? "z-30" : "z-0"}`}>
             {/* Icon + name + date + category */}
             <div className="flex items-center gap-3">
-                <div className="p-1.5 rounded-full bg-light-border dark:bg-dark-border">
+                <div className={`rounded-xl p-2 ${isIncome ? "bg-emerald-50 dark:bg-emerald-950/40" : "bg-red-50 dark:bg-red-950/30"}`}>
                     <Icon className={`w-4 h-4 ${amountColor}`} />
                 </div>
                 <div className="flex flex-col text-sm">
-                    <span className="font-medium text-light-text-primary dark:text-dark-text-primary">{transaction.name}</span>
-                    <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold text-light-text-primary dark:text-dark-text-primary">{transaction.name}</span>
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-light-text-secondary dark:text-dark-text-secondary">
                         <span>{new Date(transaction.date).toLocaleDateString()}</span>
-                        <span className="px-2 py-0.5 text-xs bg-light-border dark:bg-dark-border rounded-full">
+                    <span className="rounded-full bg-slate-200 px-2 py-1 font-medium dark:bg-slate-700">
                             {transaction.category}
                         </span>
                     </div>
@@ -68,7 +68,7 @@ export default function TransactionItem({ transaction, onEdit, onDelete, currenc
 
                 {/* Menu */}
                 {menuOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-28 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 ">
+                    <div className="absolute right-0 top-full z-50 mt-2 w-28 overflow-hidden rounded-xl border border-light-border bg-light-card shadow-xl shadow-slate-900/15 dark:border-dark-border dark:bg-dark-card">
                         <button
                             onClick={() => {
                                 onEdit?.(transaction);
@@ -95,5 +95,3 @@ export default function TransactionItem({ transaction, onEdit, onDelete, currenc
         </li>
     );
 }
-
-

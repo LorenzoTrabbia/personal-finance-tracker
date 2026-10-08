@@ -1,7 +1,10 @@
 export default function Spinner() {
     return (
-        <div className="flex justify-center items-center py-10">
-            <div className="h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="space-y-3 py-8" role="status" aria-label="Loading transactions">
+            {[1, 2, 3].map((item) => (
+                <div key={item} className="h-20 animate-pulse rounded-2xl bg-slate-200/70 dark:bg-slate-800/70" />
+            ))}
+            <span className="sr-only">Loading transactions</span>
         </div>
     );
 }

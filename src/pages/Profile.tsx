@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import type { Goal, NewGoal } from '../types/Goal';
 
 // Icons
-import { User, Mail, Currency, BarChart2, ArrowDownCircle, ArrowUpCircle, Goal as GoalIcon, PlusCircle, Settings, FileDown, Trash2, List } from 'lucide-react';
+import { User, Mail, Component, BarChart2, ArrowDownCircle, ArrowUpCircle, Goal as GoalIcon, PlusCircle, Settings, FileDown, Trash2, List } from 'lucide-react';
 import ConfirmDialog from '../components/ConfirmDialog';
 
 const Profile = () => {
@@ -138,120 +138,130 @@ const Profile = () => {
 
 
     return (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-2 py-10 px-8 mx-auto">
-            {/* User Info */}
-            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm transition duration-300">
-                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <User className="w-6 h-6 text-blue-400" />
-                    User Information
-                </h2>
-                <p className="mb-2 flex items-center gap-2">
-                    <Mail className="w-4 h-4" /> <strong>Email:</strong> {user.email}
-                </p>
-                <p className="flex items-center gap-2">
-                    <Currency className="w-4 h-4" /> <strong>Preferred currency:</strong> {currency}
-                </p>
-            </div>
-
-            {/* Stats */}
-            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm transition duration-300">
-                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <BarChart2 className="w-6 h-6 text-blue-400" /> Statistics
-                </h2>
-                <p className="mb-2 flex items-center gap-2">
-                    <List className="w-4 h-4" /> <strong>Total Transactions:</strong> {transactions.length}
-                </p>
-                <p className="mb-2 flex items-center gap-2">
-                    <ArrowDownCircle className="w-4 h-4" /> <strong>Income:</strong> {currency}{totalIncome}
-                </p>
-                <p className="flex items-center gap-2">
-                    <ArrowUpCircle className="w-4 h-4" /> <strong>Expense:</strong> {currency}{totalExpense}
-                </p>
-            </div>
-
-            {/* Goals */}
-            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm col-span-full transition duration-300">
-                <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                    <GoalIcon className="w-6 h-6 text-blue-400" /> Saving Targets
-                </h2>
-
-                {goals.length === 0 && (
-                    <p className="text-gray-500 italic mb-4">No target yet. Add one below!</p>
-                )}
-
-                {goals.map(goal => {
-                    const progress = Math.min(((totalIncome - totalExpense) / goal.target) * 100, 100);
-                    return (
-                        <div key={goal.id} className="mb-6">
-                            <div className="flex justify-between items-center mb-1">
-                                <p className="font-medium">
-                                    {goal.name} — <span className="text-sm text-gray-500">Target: {currency}{goal.target}</span>
-                                </p>
-                                <span className="text-sm text-gray-600">{Math.floor(progress)}%</span>
-                            </div>
-                            <div className="w-full bg-light-secondary-background dark:bg-dark-secondary-background rounded-full h-3 transition duration-300">
-                                <div
-                                    className="bg-blue-500 h-3 rounded-full transition-all duration-300"
-                                    style={{ width: `${progress}%` }}
-                                />
-                            </div>
-                            <button
-                                onClick={() => handleDeleteGoal(goal.id)}
-                                className="mt-2 text-sm text-light-negative-value dark:text-dark-negative-value hover:underline"
-                            >
-                                Delete target
-                            </button>
-                        </div>
-                    );
-                })}
-
-                <div className="grid md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                        <input
-                            placeholder="Target Name"
-                            value={newGoal.name}
-                            onChange={e => handleChange('name', e.target.value)}
-                            className={`border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} p-2 rounded-lg w-full text-light-text-primary dark:text-dark-text-primary transition duration-300`}
-                        />
-                        {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
-                    </div>
-                    <div>
-                        <input
-                            type="number"
-                            placeholder={`Target (${currency})`}
-                            value={newGoal.target}
-                            onChange={e => handleChange('target', e.target.value)}
-                            className={`border ${errors.target ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} p-2 rounded-lg w-full text-light-text-primary dark:text-dark-text-primary transition duration-300`}
-                        />
-                        {errors.target && <p className="text-red-500 text-sm mt-1">{errors.target}</p>}
-                    </div>
+        <div className="mx-auto max-w-7xl px-5 py-8 text-light-text-primary dark:text-dark-text-primary sm:px-8 lg:px-10 lg:py-10">
+            <div className="relative mb-8 overflow-hidden rounded-3xl bg-dark-primary px-6 py-7 text-white shadow-xl shadow-slate-900/10 sm:px-8">
+                <div className="absolute -right-16 -top-24 h-64 w-64 rounded-full bg-emerald-400/15 blur-3xl" />
+                <div className="relative">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Your space</p>
+                    <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Profile</h1>
+                    <p className="mt-3 max-w-lg text-sm leading-6 text-slate-300">A snapshot of your financial activity, goals, and progress.</p>
                 </div>
-                <button
-                    onClick={handleAddGoal}
-                    className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition flex items-center gap-2"
-                >
-                    <PlusCircle className="w-4 h-4" /> Add Target
-                </button>
             </div>
+            <div className="grid gap-6 lg:grid-cols-2">
+                {/* User Info */}
+                <div className="rounded-3xl border border-light-border bg-light-card p-6 shadow-sm transition duration-300 dark:border-dark-border dark:bg-dark-card">
+                    <h2 className="mb-6 flex items-center gap-2 text-lg font-semibold">
+                        <User className="h-5 w-5 text-emerald-500" />
+                        User Information
+                    </h2>
+                    <p className="mb-4 flex items-center gap-3 rounded-2xl bg-light-background p-3 text-sm dark:bg-dark-background">
+                        <Mail className="h-4 w-4 text-emerald-500" /> <span><strong className="mr-1">Email</strong> {user.email}</span>
+                    </p>
+                    <p className="flex items-center gap-3 rounded-2xl bg-light-background p-3 text-sm dark:bg-dark-background">
+                        <Component className="h-4 w-4 text-emerald-500" /> <span><strong className="mr-1">Currency</strong> {currency || "Not set"}</span>
+                    </p>
+                </div>
 
-            {/* Export / Reset */}
-            <div className="text-light-text-primary dark:text-dark-text-primary bg-light-card dark:bg-dark-card rounded-2xl p-6 shadow-sm col-span-full transition duration-300">
-                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <Settings className="w-5 h-5" /> Export or Reset Data
-                </h2>
-                <div className="flex flex-wrap gap-4">
+                {/* Stats */}
+                <div className="rounded-3xl border border-light-border bg-light-card p-6 shadow-sm transition duration-300 dark:border-dark-border dark:bg-dark-card">
+                    <h2 className="mb-6 flex items-center gap-2 text-lg font-semibold">
+                        <BarChart2 className="h-5 w-5 text-emerald-500" /> Statistics
+                    </h2>
+                    <p className="mb-3 flex items-center justify-between rounded-2xl bg-light-background p-3 text-sm dark:bg-dark-background">
+                        <span className="flex items-center gap-2"><List className="h-4 w-4 text-emerald-500" /> Total transactions</span><strong>{transactions.length}</strong>
+                    </p>
+                    <p className="mb-3 flex items-center justify-between rounded-2xl bg-emerald-50 p-3 text-sm dark:bg-emerald-950/30">
+                        <span className="flex items-center gap-2"><ArrowDownCircle className="h-4 w-4 text-emerald-500" /> Income</span><strong>{currency}{totalIncome.toFixed(2)}</strong>
+                    </p>
+                    <p className="flex items-center justify-between rounded-2xl bg-red-50 p-3 text-sm dark:bg-red-950/30">
+                        <span className="flex items-center gap-2"><ArrowUpCircle className="h-4 w-4 text-red-500" /> Expense</span><strong>{currency}{totalExpense.toFixed(2)}</strong>
+                    </p>
+                </div>
+
+                {/* Goals */}
+                <div className="rounded-3xl border border-light-border bg-light-card p-6 shadow-sm transition duration-300 dark:border-dark-border dark:bg-dark-card lg:col-span-2">
+                    <h2 className="mb-6 flex items-center gap-2 text-lg font-semibold">
+                        <GoalIcon className="h-5 w-5 text-emerald-500" /> Saving targets
+                    </h2>
+
+                    {goals.length === 0 && (
+                        <p className="text-gray-500 italic mb-4">No target yet. Add one below!</p>
+                    )}
+
+                    {goals.map(goal => {
+                        const progress = Math.min(((totalIncome - totalExpense) / goal.target) * 100, 100);
+                        return (
+                            <div key={goal.id} className="mb-6">
+                                <div className="flex justify-between items-center mb-1">
+                                    <p className="font-medium">
+                                        {goal.name} — <span className="text-sm text-gray-500">Target: {currency}{goal.target}</span>
+                                    </p>
+                                    <span className="text-sm text-gray-600">{Math.floor(progress)}%</span>
+                                </div>
+                                <div className="w-full bg-light-secondary-background dark:bg-dark-secondary-background rounded-full h-3 transition duration-300">
+                                    <div
+                                        className="bg-blue-500 h-3 rounded-full transition-all duration-300"
+                                        style={{ width: `${progress}%` }}
+                                    />
+                                </div>
+                                <button
+                                    onClick={() => handleDeleteGoal(goal.id)}
+                                    className="mt-2 text-sm text-light-negative-value dark:text-dark-negative-value hover:underline"
+                                >
+                                    Delete target
+                                </button>
+                            </div>
+                        );
+                    })}
+
+                    <div className="grid md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <input
+                                placeholder="Target Name"
+                                value={newGoal.name}
+                                onChange={e => handleChange('name', e.target.value)}
+                                className={`h-12 w-full rounded-xl border bg-light-background px-4 text-sm text-light-text-primary transition duration-300 dark:bg-dark-background dark:text-dark-text-primary ${errors.name ? 'border-red-500' : 'border-light-border dark:border-dark-border'}`}
+                            />
+                            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                        </div>
+                        <div>
+                            <input
+                                type="number"
+                                placeholder={`Target (${currency})`}
+                                value={newGoal.target}
+                                onChange={e => handleChange('target', e.target.value)}
+                                className={`h-12 w-full rounded-xl border bg-light-background px-4 text-sm text-light-text-primary transition duration-300 dark:bg-dark-background dark:text-dark-text-primary ${errors.target ? 'border-red-500' : 'border-light-border dark:border-dark-border'}`}
+                            />
+                            {errors.target && <p className="text-red-500 text-sm mt-1">{errors.target}</p>}
+                        </div>
+                    </div>
                     <button
-                        onClick={handleExportCSV}
-                        className="bg-green-600 hover:bg-green-700 text-dark-text-primary px-4 py-2 rounded-lg transition flex items-center gap-2 cursor-pointer"
+                        onClick={handleAddGoal}
+                        className="mt-4 flex h-11 items-center gap-2 rounded-xl bg-light-primary px-4 font-semibold text-white transition hover:bg-slate-800 dark:bg-emerald-500 dark:text-dark-primary dark:hover:bg-emerald-400"
                     >
-                        <FileDown className="w-4 h-4" /> Export CSV
+                        <PlusCircle className="w-4 h-4" /> Add Target
                     </button>
-                    <button
-                        onClick={() => setConfirmDialogOpen(true)}
-                        className="bg-red-600 hover:bg-red-700 text-dark-text-primary px-4 py-2 rounded-lg transition flex items-center gap-2 cursor-pointer"
-                    >
-                        <Trash2 className="w-4 h-4" /> Reset Data
-                    </button>
+                </div>
+
+                {/* Export / Reset */}
+                <div className="rounded-3xl border border-light-border bg-light-card p-6 text-light-text-primary shadow-sm transition duration-300 dark:border-dark-border dark:bg-dark-card dark:text-dark-text-primary lg:col-span-2">
+                    <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                        <Settings className="w-5 h-5" /> Export or Reset Data
+                    </h2>
+                    <div className="flex flex-wrap gap-4">
+                        <button
+                            onClick={handleExportCSV}
+                            className="flex h-11 items-center gap-2 rounded-xl bg-light-primary px-4 font-semibold text-white transition hover:bg-slate-800 dark:bg-emerald-500 dark:text-dark-primary dark:hover:bg-emerald-400"
+                        >
+                            <FileDown className="w-4 h-4" /> Export CSV
+                        </button>
+                        <button
+                            onClick={() => setConfirmDialogOpen(true)}
+                            className="flex h-11 items-center gap-2 rounded-xl bg-red-600 px-4 font-semibold text-white transition hover:bg-red-700"
+                        >
+                            <Trash2 className="w-4 h-4" /> Reset Data
+                        </button>
+                    </div>
                 </div>
             </div>
 
